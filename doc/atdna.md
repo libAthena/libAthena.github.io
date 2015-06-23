@@ -3,7 +3,8 @@ layout: doc
 title: ATDNA
 ---
 
-This document provides an overview and reference for using **atdna**.
+This document provides an overview for using **ATDNA**. 
+There is also a [DNA record reference](atdna-ref.html) to use during development.
 
 ## Introduction ##
 

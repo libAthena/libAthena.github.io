@@ -139,13 +139,34 @@ code {
 
 pre {
     padding: 8px 12px;
-    overflow-x: scroll;
+    overflow-x: auto;
 
     > code {
         border: 0;
         padding-right: 0;
         padding-left: 0;
     }
+}
+
+
+
+/**
+ * Table formatting
+ */
+article table {
+    border: 1px solid $grey-color-light;
+    border-radius: 3px;
+    margin-bottom: $spacing-unit / 2;
+}
+article table th {
+    border: 1px solid $grey-color-light;
+    border-radius: 3px;
+    background-color: #ccd;
+}
+article table td {
+    border: 1px solid $grey-color-light;
+    border-radius: 3px;
+    background-color: #eef;
 }
 
 
