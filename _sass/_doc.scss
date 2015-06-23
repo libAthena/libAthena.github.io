@@ -1,0 +1,19 @@
+/**
+ * Doc columns
+ */
+
+.doc-col-split {
+    float:left;
+    width:175%;
+    margin-left:-37.5%;
+}
+
+.doc-col {
+    float:left;
+    margin:1%;
+    width:48%;
+}
+
+.doc-col pre {
+    /*overflow:scroll;*/
+}
