@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>ATDNA</title>
+  <meta name="description" content="Endian-aware data marshalling and manipulation framework. Cross-platform reading and writing of arbitrarily-structured data.
+">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/toc.css">
+  <link rel="canonical" href="http://libAthena.github.io/doc/atdna.html">
+  <link rel="alternate" type="application/rss+xml" title="Athena" href="http://libAthena.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Athena</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/doc/atdna-ref.html">ATDNA Reference</a>
+          
+        
+          
+          <a class="page-link" href="/doc/atdna.html">ATDNA</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">ATDNA</h1>
+  </header>
+
+  <article class="post-content">
+    <p>This document provides an overview for using <strong>ATDNA</strong>. 
+There is also a <a href="atdna-ref.html">DNA record reference</a> to use during development.</p>
+
+<div id="toc-container">
+<table class="toc" id="toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+<ul>
+<li class="toc_level-1 toc_section-1">
+<a href="#tocAnchor-1-1"><span class="tocnumber">1</span> <span class="toctext">Introduction</span></a>
+</li>
+<li class="toc_level-1 toc_section-2">
+<a href="#tocAnchor-1-2"><span class="tocnumber">2</span> <span class="toctext">Overview</span></a>
+</li>
+<li class="toc_level-1 toc_section-3">
+<a href="#tocAnchor-1-3"><span class="tocnumber">3</span> <span class="toctext">Using</span></a>
+</li>
+<li class="toc_level-1 toc_section-4">
+<a href="#tocAnchor-1-4"><span class="tocnumber">4</span> <span class="toctext">Diagnostics</span></a>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div><h2 id="tocAnchor-1-1">Introduction</h2>
+
+<p>Athena’s primary purpose as a core library is to facilitate access and
+modification of individual <em>data fields</em> in a structured <em>data record</em>; 
+streamed or buffered. Whenever
+a developer uses Athena on its own, each individual field is read or written
+using explicitly-typed methods like <code>IStreamReader::readUint32()</code> or 
+<code>IStreamWriter::writeVec3f()</code>.</p>
+
+<p>For complex data records with recursive
+hierarchies or random-access parsing, this code can become rather tedious.
+Furthermore, separate functions must be maintained for reading and writing.
+Some code-generation assistance would be useful in these cases.</p>
+
+<h2 id="tocAnchor-1-2">Overview</h2>
+
+<p><code>atdna</code> is a source-to-source 
+<a href="http://clang.llvm.org/docs/LibTooling.html">clang tool</a> for 
+transforming a specially-formed template syntax on C++ record-declarations
+(i.e. <em>Structs</em>, <em>Classes</em>, <em>Unions</em>). The results are fully-implemented methods
+that form the basis of the <em>ordered read/write flow</em> of the streamed data.</p>
+
+<p>Important details like byte-order 
+(<a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>)
+and
+<a href="https://en.wikipedia.org/wiki/Array_data_structure">contiguous subrecord tables</a>
+are automatically accounted for by atdna’s parser.</p>
+
+<h2 id="tocAnchor-1-3">Using</h2>
+
+<p>
+<code>
+atdna [-o &lt;out.cpp&gt;] [-I &lt;include-search-dir&gt;...] &lt;in.hpp&gt;...
+</code>
+</p>
+
+<p>Since <code>atdna</code> is built on LLVM/clang, it functions much like the <code>clang</code> tool
+itself, with <code>-o &lt;out.cpp&gt;</code> to specify output and one or more standalone args
+to specify input header files <code>&lt;in.hpp&gt;...</code>. <strong>If no output file is specified,
+<code>a.cpp</code> is emitted in the working directory, overwriting the existing file if 
+any!!</strong></p>
+
+<h2 id="tocAnchor-1-4">Diagnostics</h2>
+
+<p>Clang’s built-in <em>diagnostics engine</em> is used to supply error reports for 
+records that aren’t well-formed for Athena (e.g. missing template parameters,
+namespace conflicts). Additionally, <em>all</em> C++ syntax issues are diagnosed just
+like <code>clang</code> would as a normal compiler.</p>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+
+<span class="k">struct</span> <span class="nl">DemoRecord</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="k">struct</span> <span class="n">NotDnaRecord</span>
+    <span class="p">{</span>
+        <span class="n">atUint32</span> <span class="n">notUsefulToAtdna</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">count</span><span class="p">;</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">NotDnaRecord</span><span class="p">,</span> <span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">invalidTable</span><span class="p">;</span>
+<span class="p">};</span></code>
+</pre>
+</div>
+
+<pre>
+[jacko@ghor Desktop]$ atdna -o demo.cpp demo.hpp 
+<strong>demo.hpp:11:5: <span style="color:red;">error:</span> Athena error: Unable to use type 'struct
+      DemoRecord::NotDnaRecord' with Athena</strong>
+    Vector&lt;NotDnaRecord, DNA_COUNT(count)&gt; invalidTable;
+    <span style="color:#00cc00;">^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+</pre>
+
+<div class="doc-col-split">
+    <div class="doc-col">
+        <h3>Sample Input</h3>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+
+<span class="k">struct</span> <span class="nl">DemoRecord</span> <span class="p">:</span> 
+<span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">myFloat</span><span class="p">;</span>
+
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myCount</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nl">DemoSubRecord</span> <span class="p">:</span> 
+    <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">DECL_DNA</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint16</span><span class="o">&gt;</span> <span class="n">myShort</span><span class="p">;</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint8</span><span class="o">&gt;</span> <span class="n">myChar1</span><span class="p">;</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint8</span><span class="o">&gt;</span> <span class="n">myChar2</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">DemoSubRecord</span><span class="p">,</span> <span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">myCount</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">mySubRecordArray</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
+
+    </div>
+    <div class="doc-col">
+        <h3>Sample Output</h3>
+
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cm">/* Auto generated atdna implementation */</span>
+<span class="cp">#include &lt;Athena/Global.hpp&gt;</span>
+<span class="cp">#include &lt;Athena/IStreamReader.hpp&gt;</span>
+<span class="cp">#include &lt;Athena/IStreamWriter.hpp&gt;</span>
+
+<span class="cp">#include "demo.hpp"</span>
+
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> 
+                      <span class="n">__dna_reader</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__dna_reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="cm">/* myInt */</span>
+    <span class="n">myInt</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint32</span><span class="p">();</span>
+    <span class="cm">/* myFloat */</span>
+    <span class="n">myFloat</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readFloat</span><span class="p">();</span>
+    <span class="cm">/* myCount */</span>
+    <span class="n">myCount</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint32</span><span class="p">();</span>
+    <span class="cm">/* mySubRecordArray */</span>
+    <span class="n">mySubRecordArray</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+    <span class="n">mySubRecordArray</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">myCount</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span> <span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="p">(</span><span class="n">myCount</span><span class="p">)</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">mySubRecordArray</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+        <span class="n">mySubRecordArray</span><span class="p">.</span><span class="n">back</span><span class="p">().</span><span class="n">read</span><span class="p">(</span><span class="n">__dna_reader</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> 
+                       <span class="n">__dna_writer</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="cm">/* myInt */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint32</span><span class="p">(</span><span class="n">myInt</span><span class="p">);</span>
+    <span class="cm">/* myFloat */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeFloat</span><span class="p">(</span><span class="n">myFloat</span><span class="p">);</span>
+    <span class="cm">/* myCount */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint32</span><span class="p">(</span><span class="n">myCount</span><span class="p">);</span>
+    <span class="cm">/* mySubRecordArray */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span> <span class="nl">elem</span> <span class="p">:</span> <span class="n">mySubRecordArray</span><span class="p">)</span>
+        <span class="n">elem</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">__dna_writer</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">DemoSubRecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> 
+                                     <span class="n">__dna_reader</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">__dna_reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="cm">/* myShort */</span>
+    <span class="n">myShort</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint16</span><span class="p">();</span>
+    <span class="cm">/* myChar1 */</span>
+    <span class="n">myChar1</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUByte</span><span class="p">();</span>
+    <span class="cm">/* myChar2 */</span>
+    <span class="n">myChar2</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUByte</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">DemoSubRecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> 
+                                      <span class="n">__dna_writer</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="cm">/* myShort */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint16</span><span class="p">(</span><span class="n">myShort</span><span class="p">);</span>
+    <span class="cm">/* myChar1 */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUByte</span><span class="p">(</span><span class="n">myChar1</span><span class="p">);</span>
+    <span class="cm">/* myChar2 */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUByte</span><span class="p">(</span><span class="n">myChar2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+    </div>
+</div>
+
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/libAthena">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">libAthena</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Endian-aware data marshalling and manipulation framework. Cross-platform reading and writing of arbitrarily-structured data.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

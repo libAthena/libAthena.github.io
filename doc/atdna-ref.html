@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>ATDNA Reference</title>
+  <meta name="description" content="Endian-aware data marshalling and manipulation framework. Cross-platform reading and writing of arbitrarily-structured data.
+">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/toc.css">
+  <link rel="canonical" href="http://libAthena.github.io/doc/atdna-ref.html">
+  <link rel="alternate" type="application/rss+xml" title="Athena" href="http://libAthena.github.io/feed.xml" />
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">Athena</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+          <a class="page-link" href="/doc/atdna-ref.html">ATDNA Reference</a>
+          
+        
+          
+          <a class="page-link" href="/doc/atdna.html">ATDNA</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">ATDNA Reference</h1>
+  </header>
+
+  <article class="post-content">
+    <p>For general information on <strong>ATDNA</strong>, please read the 
+<a href="atdna.html">overview article</a>.</p>
+
+<div id="toc-container">
+<table class="toc" id="toc">
+<tbody>
+<tr>
+<td>
+<div id="toctitle">
+<h2>Contents</h2>
+</div>
+<ul>
+<li class="toc_level-1 toc_section-1">
+<a href="#tocAnchor-1-1"><span class="tocnumber">1</span> <span class="toctext">Defining a DNA Record</span></a>
+</li>
+<li class="toc_level-1 toc_section-2">
+<a href="#tocAnchor-1-2"><span class="tocnumber">2</span> <span class="toctext">Adding DNA Fields</span></a>
+<ul>
+<li class="toc_level-2 toc_section-3">
+<a href="#tocAnchor-1-2-1"><span class="tocnumber">2.1</span> <span class="toctext">Value</span></a>
+</li>
+<li class="toc_level-2 toc_section-4">
+<a href="#tocAnchor-1-2-2"><span class="tocnumber">2.2</span> <span class="toctext">Vector</span></a>
+</li>
+<li class="toc_level-2 toc_section-5">
+<a href="#tocAnchor-1-2-3"><span class="tocnumber">2.3</span> <span class="toctext">Buffer</span></a>
+</li>
+<li class="toc_level-2 toc_section-6">
+<a href="#tocAnchor-1-2-4"><span class="tocnumber">2.4</span> <span class="toctext">String</span></a>
+</li>
+<li class="toc_level-2 toc_section-7">
+<a href="#tocAnchor-1-2-5"><span class="tocnumber">2.5</span> <span class="toctext">WString</span></a>
+</li>
+<li class="toc_level-2 toc_section-8">
+<a href="#tocAnchor-1-2-6"><span class="tocnumber">2.6</span> <span class="toctext">UTF8</span></a>
+</li>
+</ul>
+</li>
+<li class="toc_level-1 toc_section-9">
+<a href="#tocAnchor-1-9"><span class="tocnumber">3</span> <span class="toctext">Adding DNA Meta-Fields</span></a>
+<ul>
+<li class="toc_level-2 toc_section-10">
+<a href="#tocAnchor-1-9-1"><span class="tocnumber">3.1</span> <span class="toctext">Seek</span></a>
+</li>
+<li class="toc_level-2 toc_section-11">
+<a href="#tocAnchor-1-9-2"><span class="tocnumber">3.2</span> <span class="toctext">Align</span></a>
+</li>
+<li class="toc_level-2 toc_section-12">
+<a href="#tocAnchor-1-9-3"><span class="tocnumber">3.3</span> <span class="toctext">Delete</span></a>
+</li>
+</ul>
+</li>
+<li class="toc_level-1 toc_section-13">
+<a href="#tocAnchor-1-13"><span class="tocnumber">4</span> <span class="toctext">Inheriting DNA Record Types</span></a>
+</li>
+<li class="toc_level-1 toc_section-14">
+<a href="#tocAnchor-1-14"><span class="tocnumber">5</span> <span class="toctext">Writing Explicit Marshalling Functions</span></a>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</div><h2 id="tocAnchor-1-1">Defining a DNA Record</h2>
+
+<p><code>atdna</code> will only emit code for C++ records (structs, classes, unions) that 
+subclass (directly or indirectly) <code>Athena::io::DNA&lt;Athena::Endian&gt;</code>. The
+DNA base-class is defined in AthenaCore and can be included using
+<code>&lt;Athena/DNA.hpp&gt;</code>. A master byte-order 
+(<a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>) 
+must be selected at this time (<code>Athena::BigEndian</code> or <code>Athena::LittleEndian</code>).</p>
+
+<p>In addition to the inheritance, the <code>DNA::read()</code> and <code>DNA::write()</code> methods
+must be declared within the subclass. A convenience macro <code>DECL_DNA</code> is provided
+to take care of this automatically.</p>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+<span class="k">struct</span> <span class="nl">MyFirstDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
+<span class="p">};</span></code>
+</pre>
+</div>
+
+<h2 id="tocAnchor-1-2">Adding DNA Fields</h2>
+
+<p><code>atdna</code> uses C++11 
+<a href="http://en.cppreference.com/w/cpp/language/type_alias">type alias</a> 
+template specializations to define DNA layouts. These templates are as follows:</p>
+
+<h3 id="tocAnchor-1-2-1">Value</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">Value</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">type</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myValue</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>Simple numeric primitive type in Athena. Any built-in integer or floating-point
+type may be provided for the <code>type</code> argument.</p>
+
+<p>Athena uses the following, although atdna will work with built-in C types and
+<code>&lt;stdint.h&gt;</code> types as well:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>atInt8</code></td>
+      <td>Signed 8-bit (<code>char</code>)</td>
+    </tr>
+    <tr>
+      <td><code>atUint8</code></td>
+      <td>Unsigned 8-bit (<code>unsigned char</code>)</td>
+    </tr>
+    <tr>
+      <td><code>atInt16</code></td>
+      <td>Signed 16-bit (<code>short</code>)</td>
+    </tr>
+    <tr>
+      <td><code>atUint16</code></td>
+      <td>Unsigned 16-bit (<code>unsigned short</code>)</td>
+    </tr>
+    <tr>
+      <td><code>atInt32</code></td>
+      <td>Signed 32-bit (<code>long</code>)</td>
+    </tr>
+    <tr>
+      <td><code>atUint32</code></td>
+      <td>Unsigned 32-bit (<code>unsigned long</code>)</td>
+    </tr>
+    <tr>
+      <td><code>atInt64</code></td>
+      <td>Signed 64-bit (<code>long long</code>)</td>
+    </tr>
+    <tr>
+      <td><code>atUint64</code></td>
+      <td>Unsigned 64-bit (<code>unsigned long long</code>)</td>
+    </tr>
+    <tr>
+      <td><code>bool</code></td>
+      <td>Standard boolean type</td>
+    </tr>
+    <tr>
+      <td><code>float</code></td>
+      <td>32-bit IEEE 754 floating-point</td>
+    </tr>
+    <tr>
+      <td><code>double</code></td>
+      <td>64-bit IEEE 754 floating-point</td>
+    </tr>
+    <tr>
+      <td><code>atVec3f</code></td>
+      <td>3-component 32-bit IEEE 754 floating-point</td>
+    </tr>
+    <tr>
+      <td><code>atVec4f</code></td>
+      <td>4-component 32-bit IEEE 754 floating-point</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="tocAnchor-1-2-2">Vector</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">Vector</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">type</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">countVar</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myVector</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>This is a wrapper template around 
+<a href="http://en.cppreference.com/w/cpp/container/vector"><code>std::vector</code></a> which
+represents a 
+<a href="https://en.wikipedia.org/wiki/Array_data_structure">contiguous table of records</a>. 
+All standard vector operations are available through this type.</p>
+
+<p>The <code>type</code> argument determines the <em>per-element</em> data type used in the vector.
+It must be a type compatible with <em>Value</em> or another DNA-record subclass.</p>
+
+<p>The <code>countVar</code> argument statically-evaluates the contents of the special macro
+<code>DNA_COUNT</code>. This macro captures a C expression which is evaluated to determine
+how many elements the vector will be filled with.</p>
+
+<h4 id="example">Example</h4>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">VectorDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">count</span><span class="p">;</span>
+    
+    <span class="cm">/* I can also be defined out-of-line */</span>
+    <span class="k">struct</span> <span class="nl">VectorElement</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">DECL_DNA</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">val1</span><span class="p">;</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">val2</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">VectorElement</span><span class="p">,</span> <span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">vector</span><span class="p">;</span>
+<span class="p">};</span></code>
+</pre>
+</div>
+
+<h3 id="tocAnchor-1-2-3">Buffer</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">Buffer</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span><span class="o">&gt;</span> <span class="n">myBuffer</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>General-purpose data-buffer. The Buffer template is implemented as an <code>atUint8</code>
+variable-length buffer wrapped in 
+<a href="http://en.cppreference.com/w/cpp/memory/unique_ptr"><code>std::unique_ptr</code></a>.</p>
+
+<p>Like Vector, the <code>sizeVar</code> works via <code>DNA_COUNT</code> to determine how many bytes
+long the buffer should read and write.</p>
+
+<h4 id="example-1">Example</h4>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">BufferDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">length</span><span class="p">;</span>
+    <span class="n">Buffer</span><span class="o">&lt;</span><span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">length</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">buffer</span><span class="p">;</span>
+<span class="p">};</span></code>
+</pre>
+</div>
+
+<h3 id="tocAnchor-1-2-4">String</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">String</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">&gt;</span> <span class="n">myString</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>General-purpose byte-character string. The String template is implemented as
+a <a href="http://en.cppreference.com/w/cpp/string/basic_string"><code>std::string</code></a> with
+all available operations.</p>
+
+<p>By default, strings are assumed to be null-terminated (size -1). 
+If the string is actually
+fixed-length, the <code>sizeVar</code> argument can be supplied with an integer literal
+counting the string-buffer’s characters.</p>
+
+<h3 id="tocAnchor-1-2-5">WString</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">WString</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myWString</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>General-purpose wide-character string. The WString template is implemented as
+a <a href="http://en.cppreference.com/w/cpp/string/basic_string"><code>std::wstring</code></a> with
+all available operations.</p>
+
+<p>By default, strings are assumed to be null-terminated (size -1). 
+If the string is actually
+fixed-length, the <code>sizeVar</code> argument can be supplied with an integer literal
+counting the string-buffer’s characters.</p>
+
+<h3 id="tocAnchor-1-2-6">UTF8</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">UTF8</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myUTF8</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>General-purpose multi-byte-character string. The UTF8 template is implemented as
+a <a href="http://en.cppreference.com/w/cpp/string/basic_string"><code>std::string</code></a> with
+all available operations.</p>
+
+<p>By default, strings are assumed to be null-terminated (size -1). 
+If the string is actually
+fixed-length, the <code>sizeVar</code> argument can be supplied with an integer literal
+counting the string-buffer’s bytes.</p>
+
+<h2 id="tocAnchor-1-9">Adding DNA Meta-Fields</h2>
+
+<p><code>atdna</code> provides more than data fields. DNA can also include meta-directives
+for fine-grained control of the stream.</p>
+
+<h3 id="tocAnchor-1-9-1">Seek</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">Seek</span><span class="o">&lt;</span><span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">SeekOrigin</span> <span class="n">direction</span><span class="o">&gt;</span> <span class="n">mySeek</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>Not all formats are easily read sequentially from start-to-finish. Sometimes
+some random-access is required to handle complex, variable-length formats.</p>
+
+<p>The Seek template is provided to move the stream cursor. It works exactly like
+<a href="https://en.wikipedia.org/wiki/C_file_input/output#fseek">fseek</a>, supplied
+with a count of bytes and a direction to seek relative to.</p>
+
+<p>The <code>offset</code> argument works with the <code>DNA_COUNT</code> macro to evaluate a byte-count
+expression within the record.</p>
+
+<p>The <code>direction</code> argument may be one of the following:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Athena::SeekOrigin</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>Athena::Begin</code></td>
+      <td>Offset from start of stream</td>
+    </tr>
+    <tr>
+      <td><code>Athena::Current</code></td>
+      <td>Offset from present stream cursor</td>
+    </tr>
+    <tr>
+      <td><code>Athena::End</code></td>
+      <td>Offset from end of stream</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="example-2">Example</h4>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">SeekDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">subRecordOffset</span><span class="p">;</span>
+    <span class="n">Seek</span><span class="o">&lt;</span><span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">subRecordOffset</span><span class="p">),</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Begin</span><span class="o">&gt;</span> <span class="n">seek1</span><span class="p">;</span>
+    
+    <span class="cm">/* I start at the absolute subRecordOffset */</span>
+    <span class="k">struct</span> <span class="nl">SubRecord</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">DECL_DNA</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">val1</span><span class="p">;</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">val2</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">record</span><span class="p">;</span>
+<span class="p">};</span></code>
+</pre>
+</div>
+
+<h3 id="tocAnchor-1-9-2">Align</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">Align</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">align</span><span class="o">&gt;</span> <span class="n">myAlign</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>Some data formats are designed to be loaded as a cache-aligned data-blob.
+In order to maintain cache-alignment, padding-bytes are commonly inserted to
+bring the start of a sub-record to a 4, 8, 16, 32 byte-aligned position in
+the stream.</p>
+
+<p><code>atdna</code> provides the Align template to automatically generate the most efficent
+cursor-position evaluation; advancing forward to the nearest alignment multiple.</p>
+
+<h4 id="example-3">Example</h4>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">AlignDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="k">struct</span> <span class="nl">SubRecordOne</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">DECL_DNA</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">val</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">one</span><span class="p">;</span>
+
+    <span class="n">Align</span><span class="o">&lt;</span><span class="mi">32</span><span class="o">&gt;</span> <span class="n">align1</span><span class="p">;</span>
+
+    <span class="cm">/* I'm 32-byte aligned!! */</span>
+    <span class="k">struct</span> <span class="nl">SubRecordTwo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">DECL_DNA</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atVec3f</span><span class="o">&gt;</span> <span class="n">val</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">two</span><span class="p">;</span>
+
+    <span class="n">Align</span><span class="o">&lt;</span><span class="mi">32</span><span class="o">&gt;</span> <span class="n">align2</span><span class="p">;</span>
+    
+    <span class="cm">/* I'm also 32-byte aligned!! */</span>
+    <span class="k">struct</span> <span class="nl">SubRecordThree</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">DECL_DNA</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint16</span><span class="o">&gt;</span> <span class="n">val1</span><span class="p">;</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint16</span><span class="o">&gt;</span> <span class="n">val2</span><span class="p">;</span>
+    <span class="p">}</span> <span class="n">three</span><span class="p">;</span>    
+<span class="p">};</span></code>
+</pre>
+</div>
+
+<h3 id="tocAnchor-1-9-3">Delete</h3>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="n">Delete</span> <span class="n">myDelete</span><span class="p">;</span></code>
+</pre>
+</div>
+
+<p>Including a single instance of this field in a record prevents <code>atdna</code> from
+emitting streaming code for the whole record subclass. This is useful for 
+complex types where automatic DNA streaming isn’t practical.</p>
+
+<p>It’s not necessary to use this type directly, the <code>DECL_EXPLICIT_DNA</code> macro
+automatically places a Delete field in the record. See 
+<em>Writing Explicit Marshalling Functions</em> below for details.</p>
+
+<h2 id="tocAnchor-1-13">Inheriting DNA Record Types</h2>
+
+<p><code>atdna</code> is fully aware of type-inheritance involving DNA records. Chains of 
+<code>DNA::read()</code> and <code>DNA::write()</code> are automatically inserted for 
+indirectly-inherited DNA subclasses.</p>
+
+<p>Base classes are always visited first, cascading to the individual subclass
+implementation.</p>
+
+<h4 id="example-4">Example</h4>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+
+<span class="k">struct</span> <span class="nl">BaseDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">SubDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">BaseDNA</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">mySubInt</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="nl">SubSubDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">SubDNA</span>
+<span class="p">{</span>
+    <span class="n">DECL_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">mySubSubInt</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">readTest</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> <span class="n">reader</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">SubSubDNA</span> <span class="n">ssDna</span><span class="p">;</span>
+    
+    <span class="cm">/* This call will run BaseDNA::read(), then SubDNA::read(),</span>
+<span class="cm">     * then SubSubDNA::read() */</span>
+    <span class="n">ssDna</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span>
+<span class="p">}</span></code>
+</pre>
+</div>
+
+<h2 id="tocAnchor-1-14">Writing Explicit Marshalling Functions</h2>
+
+<p>ATDNA is a <em>one size fits many</em> solution. For complex custom data structures
+like recursive index tables, trees and arbitrarily-chunked-formats, more
+customized streaming code is required.</p>
+
+<p>The <code>DECL_EXPLICIT_DNA</code> macro is an alternative to <code>DECL_DNA</code>. When an explicit
+record is defined, <code>atdna</code> will skip emitting streaming code automatically.
+The resulting program will fail to link, unless the programmer provides
+replacement <code>DNA::read()</code> and/or <code>DNA::write()</code> implementations.</p>
+
+<p>By convention, the implementation should start by setting the byte order on the
+reader/writer using <code>IStreamReader::setEndian()</code> or <code>IStreamWriter::setEndian()</code>.</p>
+
+<h4 id="example-5">Example</h4>
+
+<div class="highlight">
+<pre>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+
+<span class="k">struct</span> <span class="nl">ExplicitDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">DECL_EXPLICIT_DNA</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint16</span><span class="o">&gt;</span> <span class="n">myShort</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="n">ExplicitDemo</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> <span class="n">reader</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">myInt</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">readUint32</span><span class="p">();</span>
+    <span class="n">myShort</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">readUint16</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">ExplicitDemo</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> <span class="n">writer</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">writer</span><span class="p">.</span><span class="n">writeUint32</span><span class="p">(</span><span class="n">myInt</span><span class="p">);</span>
+    <span class="n">writer</span><span class="p">.</span><span class="n">writeUint16</span><span class="p">(</span><span class="n">myShort</span><span class="p">);</span>
+<span class="p">}</span></code>
+</pre>
+</div>
+
+
+  </article>
+
+</div>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col  footer-col-1">
+        <ul class="contact-list">
+          <li><a href="mailto:"></a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/libAthena">
+              <span class="icon  icon--github">
+                <svg viewBox="0 0 16 16">
+                  <path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+                </svg>
+              </span>
+
+              <span class="username">libAthena</span>
+            </a>
+          </li>
+          
+
+          
+        </ul>
+      </div>
+
+      <div class="footer-col  footer-col-3">
+        <p class="text">Endian-aware data marshalling and manipulation framework. Cross-platform reading and writing of arbitrarily-structured data.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>
