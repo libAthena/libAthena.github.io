@@ -58,18 +58,12 @@ like `clang` would as a normal compiler.
 struct DemoRecord : public Athena::io::DNA<Athena::BigEndian>
 {
     DECL_DNA
-    Value<atUint32> myInt;
-    Value<float> myFloat;
-
-    Value<atUint32> myCount;
-    struct DemoSubRecord : public Athena::io::DNA<Athena::BigEndian>
+    struct NotDnaRecord
     {
-        DECL_DNA
-        Value<atUint16> myShort;
-        Value<atUint8> myChar1;
-        Value<atUint8> myChar2;
+        atUint32 notUsefulToAtdna;
     };
-    Vector<DemoSubRecord, DNA_COUNT(myCount)> mySubRecordArray;
+    Value<atUint32> count;
+    Vector<NotDnaRecord, DNA_COUNT(count)> invalidTable;
 };
 {% endhighlight %}
 
