@@ -1,0 +1,13 @@
+# Site settings
+title: Athena
+#email: your-email@domain.com
+description: >
+  Endian-aware data marshalling and manipulation framework.
+  Cross-platform reading and writing of arbitrarily-structured data.
+baseurl: "/libAthena" # the subpath of your site, e.g. /blog/
+url: "http://libAthena.github.io" # the base hostname & protocol for your site
+#twitter_username: jekyllrb
+github_username:  libAthena
+
+# Build settings
+markdown: kramdown
