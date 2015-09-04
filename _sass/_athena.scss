@@ -1,0 +1,71 @@
+/**
+ * Athena CSS
+ */
+
+.atBigSexyLogo {
+    position: relative;
+    clear: both;
+
+    .atBigSexyLogoImageCont {
+        max-width: 512pt;
+        max-height: 512pt;
+        margin-left: auto;
+        margin-right: auto;
+        .atBigSexyLogoImage {
+            width: 100%;
+            height: 0;
+            padding-bottom: 100%;
+            max-width: 512pt;
+            max-height: 512pt;
+            background-image: url(finalcomp1024.png);
+            background-size: 100%;
+        }
+    }
+
+    .atBigSexyLogoText {
+        width: 100%;
+        text-align: center;
+        font-size: 42pt;
+        float: left;
+        clear: both;
+    }
+
+    .atBigSexyLogoSubtext {
+        width: 100%;
+        text-align: center;
+        font-size: 12pt;
+        float: left;
+        clear: both;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+}
+
+.atSection {
+    clear: both;
+}
+
+.atIDE {
+    @extend .highlight;
+    background-color: #ddd;
+    border-radius: 3px;
+    h1 {
+        font-size: 12pt;
+        text-align: center;
+        padding:0;
+        margin:0;
+    }
+    figure, pre {
+        margin:0;
+        padding:5;
+    }
+}
+
+.atReadLayer {
+}
+
+.atWriteLayer {
+    height: 0;
+    overflow: hidden;
+}

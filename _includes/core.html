@@ -1,0 +1,248 @@
+<div class="atSection atCore">
+  <h2 class="atSectionTitle">Core I/O</h2>
+  <p>
+    Athena's primary taskflow involves use of <em>I/O stream objects</em> to convey
+    data to and from a binary medium. The stream objects are used to iteratively
+    read bytes from the data source and convert them into usable data-primitives
+    (i.e. integers, floats, SIMD vectors).
+  </p>
+
+  <h3>I/O Streaming</h3>
+  <p>
+    I/O streams have a common virtual interface in Athena, so code that consumes or
+    emits data is written against <a href="">Athena::io::IStreamReader</a> and/or 
+    <a href="">Athena::io::IStreamWriter</a>. Projects may use type aliasing to 
+    make Athena's namespacing more convenient for projects that use it heavily.
+  </p>
+
+  <p>Assume the following example data class:</p>
+  <div class="atIDE">
+    <h1>DemoRecord.hpp</h1>
+{% athighlight c++ %}
+#include <Athena/IStreamReader.hpp>
+#include <Athena/IStreamWriter.hpp>
+using ReadStream = Athena::io::IStreamReader;
+using WriteStream = Athena::io::IStreamWriter;
+
+class MyDataRecord
+{
+    atUint32 m_valU32;
+    bool m_valBool;
+    std::string m_string;
+public:
+    void readData(ReadStream& stream);
+    void writeData(WriteStream& stream) const;
+};
+{% endathighlight %}
+  </div>
+
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>ReadDemo.cpp</h1>
+{% athighlight c++ %}
+#include "DemoRecord.hpp"
+void MyDataRecord::readData(ReadStream& stream)
+{
+    /* Read 4-bytes and convert to 32-bit system word 
+     * (little-endian to host-endian) */
+    m_valU32 = stream.readUint32Little();
+
+    /* Read 1-byte and convert to bool type */
+    m_valBool = stream.readBool();
+
+    /* Read null-terminated C-string (however long it is) 
+     * and construct std::string to contain it */
+    m_string = stream.readString(-1);
+}
+{% endathighlight %}
+    </div>
+    <div class="atWriteLayer">
+      <h1>WriteDemo.cpp</h1>
+{% athighlight c++ %}
+#include "DemoRecord.hpp"
+void MyDataRecord::writeData(WriteStream& stream) const
+{
+    /* Emit 4-bytes with binary 32-bit word 
+     * (host-endian to little-endian) */
+    stream.writeUint32Little(m_valU32);
+
+    /* Emit 1 byte with value 0 or 1 according to bool input */
+    stream.writeBool(m_valBool);
+
+    /* Write null-terminated C-string from input std::string */
+    stream.writeString(m_string);
+}
+{% endathighlight %}
+    </div>
+  </div>
+
+  <h3>Built-in Stream Backends</h3>
+  <p>
+    Athena ships with some useful streaming backends to get common
+    data interfaces up and going.
+  </p>
+
+  <h4>File Streams (with built-in memory buffering)</h4>
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>ReadDemo.cpp</h1>
+{% athighlight c++ %}
+MyDataRecord ConstructAndRead(const std::string& filePath)
+{
+    Athena::io::FileReader reader(filePath);
+    MyDataRecord dataObject;
+    dataObject.readData(reader);
+    return dataObject;
+}
+{% endathighlight %}
+    </div>
+    <div class="atWriteLayer">
+      <h1>WriteDemo.cpp</h1>
+{% athighlight c++ %}
+void WriteExistingObject(const std::string& filePath, const MyDataRecord& obj)
+{
+    Athena::io::FileWriter writer(filePath);
+    obj.writeData(writer);
+}
+{% endathighlight %}
+    </div>
+  </div>
+
+  <h4>Memory Streams (application-owned buffer)</h4>
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>ReadDemo.cpp</h1>
+{% athighlight c++ %}
+MyDataRecord ConstructAndRead(void* buf, atUint64 len)
+{
+    Athena::io::MemoryReader reader(buf, len);
+    MyDataRecord dataObject;
+    dataObject.readData(reader);
+    return dataObject;
+}
+{% endathighlight %}
+    </div>
+    <div class="atWriteLayer">
+      <h1>WriteDemo.cpp</h1>
+{% athighlight c++ %}
+void WriteExistingObject(void* buf, atUint64 len, const MyDataRecord& obj)
+{
+    Athena::io::MemoryWriter writer(buf, len);
+    obj.writeData(writer);
+}
+{% endathighlight %}
+    </div>
+  </div>
+
+  <h4>Memory Copy Streams (stream-owned copy buffer)</h4>
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>ReadDemo.cpp</h1>
+{% athighlight c++ %}
+Athena::io::MemoryCopyReader ConstructAndRead(void* buf, atUint64 len, MyDataRecord& obj)
+{
+    /* Constructor performs buffer copy */
+    Athena::io::MemoryCopyReader reader(buf, len);
+    obj.readData(reader);
+
+    /* Raw data is still contained within reader for 
+     * continued lifetime without being clobbered
+    return reader; 
+}
+{% endathighlight %}
+    </div>
+    <div class="atWriteLayer">
+      <h1>WriteDemo.cpp</h1>
+{% athighlight c++ %}
+Athena::io::MemoryCopyWriter WriteExistingObject(void* buf, atUint64 len, const MyDataRecord& obj)
+{
+    /* Constructor performs buffer copy */
+    Athena::io::MemoryCopyWriter writer(buf, len);
+    obj.writeData(writer);
+
+    /* Raw data is still contained within writer for 
+     * continued lifetime without being clobbered
+    return writer;
+}
+{% endathighlight %}
+    </div>
+  </div>
+
+  <h3>Custom Stream Backends</h3>
+  <p>
+    The actual data interfacing occurs via raw-byte transfers using
+    IStreamReader::readUBytesToBuf() and 
+    IStreamWriter::writeUBytes(). Programs needing to interface
+    with custom data streams do so by inheriting IStreamReader/Writer and
+    implementing a few methods.
+  </p>
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>MyReadBackend.hpp</h1>
+{% athighlight c++ %}
+#include <Athena/IStreamReader>
+class MyReadBackend : public Athena::io::IStreamReader
+{
+    MyReadSource& m_source
+    atUint64 m_curPos = 0;
+public:
+    MyReadBackend(MyReadSource& source)
+    : m_source(source) {}
+    void seek(atInt64 pos, SeekOrigin origin)
+    {
+        /* Some applications (like this demo) may not
+         * require random-access; leave this implementation as a stub */
+    }
+    atUint64 position() const
+    {
+        return m_curPos;
+    }
+    atUint64 length() const
+    {
+        return m_source.getLength();
+    }
+    atUint64 readUBytesToBuf(void* buf, atUint64 len)
+    {
+        atUint64 rLen = m_source.readData(buf, len);
+        m_curPos += rLen;
+        return rLen;
+    }
+};
+{% endathighlight %}
+    </div>
+    <div class="atWriteLayer">
+      <h1>MyWriteBackend.hpp</h1>
+{% athighlight c++ %}
+#include <Athena/IStreamWriter>
+class MyWriteBackend : public Athena::io::IStreamWriter
+{
+    MyWriteDestination& m_dest;
+    atUint64 m_curPos = 0;
+public:
+    MyWriteBackend(MyWriteDestination& dest)
+    : m_dest(dest) {}
+    void seek(atInt64 pos, SeekOrigin origin)
+    {
+        /* Some applications (like this demo) may not
+         * require random-access; leave this implementation as a stub */
+    }
+    atUint64 position() const
+    {
+        return m_curPos;
+    }
+    atUint64 length() const
+    {
+        return m_dest.getCapacity();
+    }
+    atUint64 writeUBytes(void* buf, atUint64 len)
+    {
+        atUint64 wLen = m_dest.writeData(buf, len);
+        m_curPos += wLen;
+        return wLen;
+    }
+};
+{% endathighlight %}
+    </div>
+  </div>
+
+</div>
