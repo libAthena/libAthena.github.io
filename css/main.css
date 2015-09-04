@@ -25,7 +25,8 @@ body {
 h1, h2, h3, h4, h5, h6,
 p, blockquote, pre,
 ul, ol, dl, figure,
-.highlight {
+.highlight,
+.atIDE {
   margin-bottom: 15px; }
 
 /**
@@ -164,10 +165,12 @@ article table td {
  * Site header
  */
 .site-header {
-  border-top: 5px solid #424242;
   border-bottom: 1px solid #e8e8e8;
   min-height: 56px;
-  position: relative; }
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+  background-color: rgba(255, 255, 255, 0.9); }
 
 .site-title {
   font-size: 26px;
@@ -276,7 +279,8 @@ article table td {
  * Page content
  */
 .page-content {
-  padding: 30px 0; }
+  padding: 30px 0;
+  padding-top: 70px; }
 
 .page-heading {
   font-size: 20px; }
@@ -348,138 +352,191 @@ article table td {
 /**
  * Syntax highlighting styles
  */
-.highlight {
+.highlight, .atIDE {
   background: #fff; }
-  .highlight .c {
+  .highlight .c, .atIDE .c {
     color: #998;
     font-style: italic; }
-  .highlight .err {
+  .highlight .err, .atIDE .err {
     color: #a61717;
     background-color: #e3d2d2; }
-  .highlight .k {
+  .highlight .k, .atIDE .k {
     font-weight: bold; }
-  .highlight .o {
+  .highlight .o, .atIDE .o {
     font-weight: bold; }
-  .highlight .cm {
+  .highlight .cm, .atIDE .cm {
     color: #998;
     font-style: italic; }
-  .highlight .cp {
+  .highlight .cp, .atIDE .cp {
     color: #999;
     font-weight: bold; }
-  .highlight .c1 {
+  .highlight .c1, .atIDE .c1 {
     color: #998;
     font-style: italic; }
-  .highlight .cs {
+  .highlight .cs, .atIDE .cs {
     color: #999;
     font-weight: bold;
     font-style: italic; }
-  .highlight .gd {
+  .highlight .gd, .atIDE .gd {
     color: #000;
     background-color: #fdd; }
-  .highlight .gd .x {
+  .highlight .gd .x, .atIDE .gd .x {
     color: #000;
     background-color: #faa; }
-  .highlight .ge {
+  .highlight .ge, .atIDE .ge {
     font-style: italic; }
-  .highlight .gr {
+  .highlight .gr, .atIDE .gr {
     color: #a00; }
-  .highlight .gh {
+  .highlight .gh, .atIDE .gh {
     color: #999; }
-  .highlight .gi {
+  .highlight .gi, .atIDE .gi {
     color: #000;
     background-color: #dfd; }
-  .highlight .gi .x {
+  .highlight .gi .x, .atIDE .gi .x {
     color: #000;
     background-color: #afa; }
-  .highlight .go {
+  .highlight .go, .atIDE .go {
     color: #888; }
-  .highlight .gp {
+  .highlight .gp, .atIDE .gp {
     color: #555; }
-  .highlight .gs {
+  .highlight .gs, .atIDE .gs {
     font-weight: bold; }
-  .highlight .gu {
+  .highlight .gu, .atIDE .gu {
     color: #aaa; }
-  .highlight .gt {
+  .highlight .gt, .atIDE .gt {
     color: #a00; }
-  .highlight .kc {
+  .highlight .kc, .atIDE .kc {
     font-weight: bold; }
-  .highlight .kd {
+  .highlight .kd, .atIDE .kd {
     font-weight: bold; }
-  .highlight .kp {
+  .highlight .kp, .atIDE .kp {
     font-weight: bold; }
-  .highlight .kr {
+  .highlight .kr, .atIDE .kr {
     font-weight: bold; }
-  .highlight .kt {
+  .highlight .kt, .atIDE .kt {
     color: #458;
     font-weight: bold; }
-  .highlight .m {
+  .highlight .m, .atIDE .m {
     color: #099; }
-  .highlight .s {
+  .highlight .s, .atIDE .s {
     color: #d14; }
-  .highlight .na {
+  .highlight .na, .atIDE .na {
     color: #008080; }
-  .highlight .nb {
+  .highlight .nb, .atIDE .nb {
     color: #0086B3; }
-  .highlight .nc {
+  .highlight .nc, .atIDE .nc {
     color: #458;
     font-weight: bold; }
-  .highlight .no {
+  .highlight .no, .atIDE .no {
     color: #008080; }
-  .highlight .ni {
+  .highlight .ni, .atIDE .ni {
     color: #800080; }
-  .highlight .ne {
+  .highlight .ne, .atIDE .ne {
     color: #900;
     font-weight: bold; }
-  .highlight .nf {
+  .highlight .nf, .atIDE .nf {
     color: #900;
     font-weight: bold; }
-  .highlight .nn {
+  .highlight .nn, .atIDE .nn {
     color: #555; }
-  .highlight .nt {
+  .highlight .nt, .atIDE .nt {
     color: #000080; }
-  .highlight .nv {
+  .highlight .nv, .atIDE .nv {
     color: #008080; }
-  .highlight .ow {
+  .highlight .ow, .atIDE .ow {
     font-weight: bold; }
-  .highlight .w {
+  .highlight .w, .atIDE .w {
     color: #bbb; }
-  .highlight .mf {
+  .highlight .mf, .atIDE .mf {
     color: #099; }
-  .highlight .mh {
+  .highlight .mh, .atIDE .mh {
     color: #099; }
-  .highlight .mi {
+  .highlight .mi, .atIDE .mi {
     color: #099; }
-  .highlight .mo {
+  .highlight .mo, .atIDE .mo {
     color: #099; }
-  .highlight .sb {
+  .highlight .sb, .atIDE .sb {
     color: #d14; }
-  .highlight .sc {
+  .highlight .sc, .atIDE .sc {
     color: #d14; }
-  .highlight .sd {
+  .highlight .sd, .atIDE .sd {
     color: #d14; }
-  .highlight .s2 {
+  .highlight .s2, .atIDE .s2 {
     color: #d14; }
-  .highlight .se {
+  .highlight .se, .atIDE .se {
     color: #d14; }
-  .highlight .sh {
+  .highlight .sh, .atIDE .sh {
     color: #d14; }
-  .highlight .si {
+  .highlight .si, .atIDE .si {
     color: #d14; }
-  .highlight .sx {
+  .highlight .sx, .atIDE .sx {
     color: #d14; }
-  .highlight .sr {
+  .highlight .sr, .atIDE .sr {
     color: #009926; }
-  .highlight .s1 {
+  .highlight .s1, .atIDE .s1 {
     color: #d14; }
-  .highlight .ss {
+  .highlight .ss, .atIDE .ss {
     color: #990073; }
-  .highlight .bp {
+  .highlight .bp, .atIDE .bp {
     color: #999; }
-  .highlight .vc {
+  .highlight .vc, .atIDE .vc {
     color: #008080; }
-  .highlight .vg {
+  .highlight .vg, .atIDE .vg {
     color: #008080; }
-  .highlight .vi {
+  .highlight .vi, .atIDE .vi {
     color: #008080; }
-  .highlight .il {
+  .highlight .il, .atIDE .il {
     color: #099; }
+
+/**
+ * Athena CSS
+ */
+.atBigSexyLogo {
+  position: relative;
+  clear: both; }
+  .atBigSexyLogo .atBigSexyLogoImageCont {
+    max-width: 512pt;
+    max-height: 512pt;
+    margin-left: auto;
+    margin-right: auto; }
+    .atBigSexyLogo .atBigSexyLogoImageCont .atBigSexyLogoImage {
+      width: 100%;
+      height: 0;
+      padding-bottom: 100%;
+      max-width: 512pt;
+      max-height: 512pt;
+      background-image: url(finalcomp1024.png);
+      background-size: 100%; }
+  .atBigSexyLogo .atBigSexyLogoText {
+    width: 100%;
+    text-align: center;
+    font-size: 42pt;
+    float: left;
+    clear: both; }
+  .atBigSexyLogo .atBigSexyLogoSubtext {
+    width: 100%;
+    text-align: center;
+    font-size: 12pt;
+    float: left;
+    clear: both;
+    color: #555;
+    margin-bottom: 30px; }
+
+.atSection {
+  clear: both; }
+
+.atIDE {
+  background-color: #ddd;
+  border-radius: 3px; }
+  .atIDE h1 {
+    font-size: 12pt;
+    text-align: center;
+    padding: 0;
+    margin: 0; }
+  .atIDE figure, .atIDE pre {
+    margin: 0;
+    padding: 5; }
+
+.atWriteLayer {
+  height: 0;
+  overflow: hidden; }
