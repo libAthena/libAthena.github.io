@@ -1,5 +1,5 @@
 <div class="atSection atCore">
-  <h2 class="atSectionTitle">Core I/O</h2>
+  <h1 class="atSectionTitle">Core I/O</h1>
   <p>
     Athena's primary taskflow involves use of <em>I/O stream objects</em> to convey
     data to and from a binary medium. The stream objects are used to iteratively
@@ -7,7 +7,7 @@
     (i.e. integers, floats, SIMD vectors).
   </p>
 
-  <h3>I/O Streaming</h3>
+  <h2>I/O Streaming</h2>
   <p>
     I/O streams have a common virtual interface in Athena, so code that consumes or
     emits data is written against <a href="">Athena::io::IStreamReader</a> and/or 
@@ -76,16 +76,16 @@ void MyDataRecord::writeData(WriteStream& stream) const
     </div>
   </div>
 
-  <h3>Built-in Stream Backends</h3>
+  <h2>Built-in Stream Backends</h2>
   <p>
     Athena ships with some useful streaming backends to get common
     data interfaces up and going.
   </p>
 
-  <h4>File Streams (with built-in memory buffering)</h4>
+  <h3>File Streams (with built-in memory buffering)</h3>
   <div class="atIDE">
     <div class="atReadLayer">
-      <h1>ReadDemo.cpp</h1>
+      <h1>ReadDemoFile.cpp</h1>
 {% athighlight c++ %}
 MyDataRecord ConstructAndRead(const std::string& filePath)
 {
@@ -97,7 +97,7 @@ MyDataRecord ConstructAndRead(const std::string& filePath)
 {% endathighlight %}
     </div>
     <div class="atWriteLayer">
-      <h1>WriteDemo.cpp</h1>
+      <h1>WriteDemoFile.cpp</h1>
 {% athighlight c++ %}
 void WriteExistingObject(const std::string& filePath, const MyDataRecord& obj)
 {
@@ -108,10 +108,10 @@ void WriteExistingObject(const std::string& filePath, const MyDataRecord& obj)
     </div>
   </div>
 
-  <h4>Memory Streams (application-owned buffer)</h4>
+  <h3>Memory Streams (application-owned buffer)</h3>
   <div class="atIDE">
     <div class="atReadLayer">
-      <h1>ReadDemo.cpp</h1>
+      <h1>ReadDemoMem.cpp</h1>
 {% athighlight c++ %}
 MyDataRecord ConstructAndRead(void* buf, atUint64 len)
 {
@@ -123,7 +123,7 @@ MyDataRecord ConstructAndRead(void* buf, atUint64 len)
 {% endathighlight %}
     </div>
     <div class="atWriteLayer">
-      <h1>WriteDemo.cpp</h1>
+      <h1>WriteDemoMem.cpp</h1>
 {% athighlight c++ %}
 void WriteExistingObject(void* buf, atUint64 len, const MyDataRecord& obj)
 {
@@ -134,10 +134,10 @@ void WriteExistingObject(void* buf, atUint64 len, const MyDataRecord& obj)
     </div>
   </div>
 
-  <h4>Memory Copy Streams (stream-owned copy buffer)</h4>
+  <h3>Memory Copy Streams (stream-owned copy buffer)</h3>
   <div class="atIDE">
     <div class="atReadLayer">
-      <h1>ReadDemo.cpp</h1>
+      <h1>ReadDemoMemCopy.cpp</h1>
 {% athighlight c++ %}
 Athena::io::MemoryCopyReader ConstructAndRead(void* buf, atUint64 len, MyDataRecord& obj)
 {
@@ -146,13 +146,13 @@ Athena::io::MemoryCopyReader ConstructAndRead(void* buf, atUint64 len, MyDataRec
     obj.readData(reader);
 
     /* Raw data is still contained within reader for 
-     * continued lifetime without being clobbered
+     * continued lifetime without being clobbered */
     return reader; 
 }
 {% endathighlight %}
     </div>
     <div class="atWriteLayer">
-      <h1>WriteDemo.cpp</h1>
+      <h1>WriteDemoMemCopy.cpp</h1>
 {% athighlight c++ %}
 Athena::io::MemoryCopyWriter WriteExistingObject(void* buf, atUint64 len, const MyDataRecord& obj)
 {
@@ -161,14 +161,14 @@ Athena::io::MemoryCopyWriter WriteExistingObject(void* buf, atUint64 len, const 
     obj.writeData(writer);
 
     /* Raw data is still contained within writer for 
-     * continued lifetime without being clobbered
+     * continued lifetime without being clobbered */
     return writer;
 }
 {% endathighlight %}
     </div>
   </div>
 
-  <h3>Custom Stream Backends</h3>
+  <h2>Custom Stream Backends</h2>
   <p>
     The actual data interfacing occurs via raw-byte transfers using
     IStreamReader::readUBytesToBuf() and 
@@ -188,19 +188,26 @@ class MyReadBackend : public Athena::io::IStreamReader
 public:
     MyReadBackend(MyReadSource& source)
     : m_source(source) {}
+
+    /* Some applications (like this demo) may not
+     * require random-access; leave this implementation as a stub */
     void seek(atInt64 pos, SeekOrigin origin)
-    {
-        /* Some applications (like this demo) may not
-         * require random-access; leave this implementation as a stub */
-    }
+    {}
+
+    /* Identifies current stream-position (byte index to be read next) */
     atUint64 position() const
     {
         return m_curPos;
     }
+
+    /* Identifies source length */
     atUint64 length() const
     {
         return m_source.getLength();
     }
+
+    /* Performs read to provided buffer 
+     * (automatically called by data-primitive methods like readUint32) */
     atUint64 readUBytesToBuf(void* buf, atUint64 len)
     {
         atUint64 rLen = m_source.readData(buf, len);
@@ -221,19 +228,26 @@ class MyWriteBackend : public Athena::io::IStreamWriter
 public:
     MyWriteBackend(MyWriteDestination& dest)
     : m_dest(dest) {}
+
+    /* Some applications (like this demo) may not
+     * require random-access; leave this implementation as a stub */
     void seek(atInt64 pos, SeekOrigin origin)
-    {
-        /* Some applications (like this demo) may not
-         * require random-access; leave this implementation as a stub */
-    }
+    {}
+
+    /* Identifies current stream-position (byte index to be written next) */
     atUint64 position() const
     {
         return m_curPos;
     }
+
+    /* Identifies destination capacity */
     atUint64 length() const
     {
         return m_dest.getCapacity();
     }
+
+    /* Performs write using provided buffer 
+     * (automatically called by data-primitive methods like writeUint32) */
     atUint64 writeUBytes(void* buf, atUint64 len)
     {
         atUint64 wLen = m_dest.writeData(buf, len);

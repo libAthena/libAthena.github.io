@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <style type="text/css">
+    .atReadLayer {
+    }
+    .atWriteLayer {
+        height: 0;
+        overflow: hidden;
+    }
+  </style>
+
+  <body>
+
+    {% assign rwnav = 'true' %}
+    {% include header.html %}
+
+    <div class="atBigSexyLogo">
+      <div class="atBigSexyLogoImageCont"><div class="atBigSexyLogoImage"></div></div>
+      <span class="atBigSexyLogoText">Athena</span>
+      <span class="atBigSexyLogoSubtext">Universal C++11 Data-Interchange System</span>
+    </div>
+
+    <div class="page-content">
+      <div class="wrapper">
+        {{ content }}
+      </div>
+    </div>
+
+    {% include footer.html %}
+
+  </body>
+
+</html>

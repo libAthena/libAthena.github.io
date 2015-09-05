@@ -14,13 +14,29 @@
       </a>
 
       <div class="trigger">
-        {% for page in site.pages %}
-          {% if page.title %}
-          <a class="page-link" href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
-          {% endif %}
-        {% endfor %}
+        {% if rwnav == 'true' %}
+        <a class="page-link" href="#core">Core I/O</a>
+        <a class="page-link" href="#dna">DNA</a>
+        <a class="page-link" href="#yaml">YAML</a>
+        {% else %}
+        <a class="page-link" href="/#core">Core I/O</a>
+        <a class="page-link" href="/#dna">DNA</a>
+        <a class="page-link" href="/#yaml">YAML</a>
+        {% endif %}
       </div>
     </nav>
+
+    {% if rwnav == 'true' %}
+    <div class="atRW">
+      {% if writers == "true" %}
+      <a href="{{ site.baseurl }}/" class="atRWInactive atRWLeft">Readers</a>
+      <a href="{{ site.baseurl }}/writers.html" class="atRWActive atRWRight">Writers</a>
+      {% else %}
+      <a href="{{ site.baseurl }}/" class="atRWActive atRWLeft">Readers</a>
+      <a href="{{ site.baseurl }}/writers.html" class="atRWInactive atRWRight">Writers</a>
+      {% endif %}
+    </div>
+    {% endif %}
 
   </div>
 

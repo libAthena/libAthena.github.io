@@ -2,9 +2,59 @@
  * Athena CSS
  */
 
+.anchor-target {
+    float: left;
+    clear: both;
+    display: block;
+    position: relative;
+    top: -55px;
+    visibility: hidden;
+}
+
+.atRW {
+    position: relative;
+    top: 10px;
+    float: right;
+    display: block;
+    margin-right: $spacing-unit;
+}
+
+.atRWLeft {
+    float: left;
+    display: table-cell;
+    padding: 3pt 7pt;
+    margin: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 5px;
+}
+
+.atRWRight {
+    float: left;
+    display: table-cell;
+    padding: 3pt 7pt;
+    margin: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 0;
+}
+
+.atRWActive, .atRWActive:visited {
+    color: #33c;
+    border: 1px solid #33c;
+}
+
+.atRWInactive, .atRWInactive:visited {
+    color: #ccc;
+    border: 1px solid #ccc;
+}
+
 .atBigSexyLogo {
     position: relative;
     clear: both;
+    padding-top: 50px;
 
     .atBigSexyLogoImageCont {
         max-width: 512pt;
@@ -44,28 +94,25 @@
 
 .atSection {
     clear: both;
+    margin-bottom: 30pt;
 }
 
 .atIDE {
-    @extend .highlight;
     background-color: #ddd;
+    border: 1px solid #ccc;
     border-radius: 3px;
     h1 {
+        font-family: monospace;
         font-size: 12pt;
         text-align: center;
         padding:0;
         margin:0;
     }
     figure, pre {
+        border-top: 1px solid #ccc;
         margin:0;
         padding:5;
     }
+    margin-bottom: $spacing-unit;
 }
 
-.atReadLayer {
-}
-
-.atWriteLayer {
-    height: 0;
-    overflow: hidden;
-}
