@@ -505,6 +505,9 @@ article table td {
   display: block;
   margin-right: 30px; }
 
+@media screen and (max-width: 600px) {
+  .atRW {
+    display: none; } }
 .atRWLeft {
   float: left;
   display: table-cell;
