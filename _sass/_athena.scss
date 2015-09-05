@@ -19,6 +19,12 @@
     margin-right: $spacing-unit;
 }
 
+@include media-query($on-palm) {
+.atRW {
+    display: none;
+}
+}
+
 .atRWLeft {
     float: left;
     display: table-cell;
