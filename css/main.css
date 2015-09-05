@@ -25,8 +25,7 @@ body {
 h1, h2, h3, h4, h5, h6,
 p, blockquote, pre,
 ul, ol, dl, figure,
-.highlight,
-.atIDE {
+.highlight {
   margin-bottom: 15px; }
 
 /**
@@ -352,148 +351,192 @@ article table td {
 /**
  * Syntax highlighting styles
  */
-.highlight, .atIDE {
+.highlight {
   background: #fff; }
-  .highlight .c, .atIDE .c {
+  .highlight .c {
     color: #998;
     font-style: italic; }
-  .highlight .err, .atIDE .err {
+  .highlight .err {
     color: #a61717;
     background-color: #e3d2d2; }
-  .highlight .k, .atIDE .k {
+  .highlight .k {
     font-weight: bold; }
-  .highlight .o, .atIDE .o {
+  .highlight .o {
     font-weight: bold; }
-  .highlight .cm, .atIDE .cm {
+  .highlight .cm {
     color: #998;
     font-style: italic; }
-  .highlight .cp, .atIDE .cp {
+  .highlight .cp {
     color: #999;
     font-weight: bold; }
-  .highlight .c1, .atIDE .c1 {
+  .highlight .c1 {
     color: #998;
     font-style: italic; }
-  .highlight .cs, .atIDE .cs {
+  .highlight .cs {
     color: #999;
     font-weight: bold;
     font-style: italic; }
-  .highlight .gd, .atIDE .gd {
+  .highlight .gd {
     color: #000;
     background-color: #fdd; }
-  .highlight .gd .x, .atIDE .gd .x {
+  .highlight .gd .x {
     color: #000;
     background-color: #faa; }
-  .highlight .ge, .atIDE .ge {
+  .highlight .ge {
     font-style: italic; }
-  .highlight .gr, .atIDE .gr {
+  .highlight .gr {
     color: #a00; }
-  .highlight .gh, .atIDE .gh {
+  .highlight .gh {
     color: #999; }
-  .highlight .gi, .atIDE .gi {
+  .highlight .gi {
     color: #000;
     background-color: #dfd; }
-  .highlight .gi .x, .atIDE .gi .x {
+  .highlight .gi .x {
     color: #000;
     background-color: #afa; }
-  .highlight .go, .atIDE .go {
+  .highlight .go {
     color: #888; }
-  .highlight .gp, .atIDE .gp {
+  .highlight .gp {
     color: #555; }
-  .highlight .gs, .atIDE .gs {
+  .highlight .gs {
     font-weight: bold; }
-  .highlight .gu, .atIDE .gu {
+  .highlight .gu {
     color: #aaa; }
-  .highlight .gt, .atIDE .gt {
+  .highlight .gt {
     color: #a00; }
-  .highlight .kc, .atIDE .kc {
+  .highlight .kc {
     font-weight: bold; }
-  .highlight .kd, .atIDE .kd {
+  .highlight .kd {
     font-weight: bold; }
-  .highlight .kp, .atIDE .kp {
+  .highlight .kp {
     font-weight: bold; }
-  .highlight .kr, .atIDE .kr {
+  .highlight .kr {
     font-weight: bold; }
-  .highlight .kt, .atIDE .kt {
+  .highlight .kt {
     color: #458;
     font-weight: bold; }
-  .highlight .m, .atIDE .m {
+  .highlight .m {
     color: #099; }
-  .highlight .s, .atIDE .s {
+  .highlight .s {
     color: #d14; }
-  .highlight .na, .atIDE .na {
+  .highlight .na {
     color: #008080; }
-  .highlight .nb, .atIDE .nb {
+  .highlight .nb {
     color: #0086B3; }
-  .highlight .nc, .atIDE .nc {
+  .highlight .nc {
     color: #458;
     font-weight: bold; }
-  .highlight .no, .atIDE .no {
+  .highlight .no {
     color: #008080; }
-  .highlight .ni, .atIDE .ni {
+  .highlight .ni {
     color: #800080; }
-  .highlight .ne, .atIDE .ne {
+  .highlight .ne {
     color: #900;
     font-weight: bold; }
-  .highlight .nf, .atIDE .nf {
+  .highlight .nf {
     color: #900;
     font-weight: bold; }
-  .highlight .nn, .atIDE .nn {
+  .highlight .nn {
     color: #555; }
-  .highlight .nt, .atIDE .nt {
+  .highlight .nt {
     color: #000080; }
-  .highlight .nv, .atIDE .nv {
+  .highlight .nv {
     color: #008080; }
-  .highlight .ow, .atIDE .ow {
+  .highlight .ow {
     font-weight: bold; }
-  .highlight .w, .atIDE .w {
+  .highlight .w {
     color: #bbb; }
-  .highlight .mf, .atIDE .mf {
+  .highlight .mf {
     color: #099; }
-  .highlight .mh, .atIDE .mh {
+  .highlight .mh {
     color: #099; }
-  .highlight .mi, .atIDE .mi {
+  .highlight .mi {
     color: #099; }
-  .highlight .mo, .atIDE .mo {
+  .highlight .mo {
     color: #099; }
-  .highlight .sb, .atIDE .sb {
+  .highlight .sb {
     color: #d14; }
-  .highlight .sc, .atIDE .sc {
+  .highlight .sc {
     color: #d14; }
-  .highlight .sd, .atIDE .sd {
+  .highlight .sd {
     color: #d14; }
-  .highlight .s2, .atIDE .s2 {
+  .highlight .s2 {
     color: #d14; }
-  .highlight .se, .atIDE .se {
+  .highlight .se {
     color: #d14; }
-  .highlight .sh, .atIDE .sh {
+  .highlight .sh {
     color: #d14; }
-  .highlight .si, .atIDE .si {
+  .highlight .si {
     color: #d14; }
-  .highlight .sx, .atIDE .sx {
+  .highlight .sx {
     color: #d14; }
-  .highlight .sr, .atIDE .sr {
+  .highlight .sr {
     color: #009926; }
-  .highlight .s1, .atIDE .s1 {
+  .highlight .s1 {
     color: #d14; }
-  .highlight .ss, .atIDE .ss {
+  .highlight .ss {
     color: #990073; }
-  .highlight .bp, .atIDE .bp {
+  .highlight .bp {
     color: #999; }
-  .highlight .vc, .atIDE .vc {
+  .highlight .vc {
     color: #008080; }
-  .highlight .vg, .atIDE .vg {
+  .highlight .vg {
     color: #008080; }
-  .highlight .vi, .atIDE .vi {
+  .highlight .vi {
     color: #008080; }
-  .highlight .il, .atIDE .il {
+  .highlight .il {
     color: #099; }
 
 /**
  * Athena CSS
  */
+.anchor-target {
+  float: left;
+  clear: both;
+  display: block;
+  position: relative;
+  top: -55px;
+  visibility: hidden; }
+
+.atRW {
+  position: relative;
+  top: 10px;
+  float: right;
+  display: block;
+  margin-right: 30px; }
+
+.atRWLeft {
+  float: left;
+  display: table-cell;
+  padding: 3pt 7pt;
+  margin: 0;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 5px; }
+
+.atRWRight {
+  float: left;
+  display: table-cell;
+  padding: 3pt 7pt;
+  margin: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 0; }
+
+.atRWActive, .atRWActive:visited {
+  color: #33c;
+  border: 1px solid #33c; }
+
+.atRWInactive, .atRWInactive:visited {
+  color: #ccc;
+  border: 1px solid #ccc; }
+
 .atBigSexyLogo {
   position: relative;
-  clear: both; }
+  clear: both;
+  padding-top: 50px; }
   .atBigSexyLogo .atBigSexyLogoImageCont {
     max-width: 512pt;
     max-height: 512pt;
@@ -523,20 +566,21 @@ article table td {
     margin-bottom: 30px; }
 
 .atSection {
-  clear: both; }
+  clear: both;
+  margin-bottom: 30pt; }
 
 .atIDE {
   background-color: #ddd;
-  border-radius: 3px; }
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 30px; }
   .atIDE h1 {
+    font-family: monospace;
     font-size: 12pt;
     text-align: center;
     padding: 0;
     margin: 0; }
   .atIDE figure, .atIDE pre {
+    border-top: 1px solid #ccc;
     margin: 0;
     padding: 5; }
-
-.atWriteLayer {
-  height: 0;
-  overflow: hidden; }
