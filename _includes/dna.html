@@ -177,6 +177,7 @@ int main(int argc, char* argv[])
     MyDNARecord record;
     record.read(reader); /* DNA implementation called here */
     std::cout << "Val1: " << record.m_val1 << " Val2: " << record.m_val2 << "\n";
+    return 0;
 }
 
 {% endathighlight %}
@@ -194,6 +195,7 @@ int main(int argc, char* argv[])
     record.m_val1 = 0x42;
     record.m_val2 = 3.14159265359;
     record.write(writer); /* DNA implementation called here */
+    return 0;
 }
 {% endathighlight %}
     </div>
