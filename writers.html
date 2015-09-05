@@ -560,6 +560,7 @@
     <span class="n">MyDNARecord</span> <span class="n">record</span><span class="p">;</span>
     <span class="n">record</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span> <span class="cm">/* DNA implementation called here */</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Val1: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; Val2: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
     </div>
     <div class="atWriteLayer">
@@ -574,6 +575,7 @@
     <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">=</span> <span class="mh">0x42</span><span class="p">;</span>
     <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">=</span> <span class="mf">3.14159265359</span><span class="p">;</span>
     <span class="n">record</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">writer</span><span class="p">);</span> <span class="cm">/* DNA implementation called here */</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
     </div>
   </div>
@@ -665,6 +667,8 @@
     <span class="n">MyYAMLRecord</span> <span class="n">record</span><span class="p">;</span>
     <span class="n">record</span><span class="p">.</span><span class="n">fromYAMLFile</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span> <span class="cm">/* YAML implementation called here */</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Val1: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; Val2: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
     </div>
     <div class="atWriteLayer">
@@ -680,6 +684,8 @@
     <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">=</span> <span class="mh">0x42</span><span class="p">;</span>
     <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">=</span> <span class="mf">3.14159265359</span><span class="p">;</span>
     <span class="n">record</span><span class="p">.</span><span class="n">toYAMLFile</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span> <span class="cm">/* YAML implementation called here */</span>
+    <span class="n">fclose</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span></code></pre></figure>
     </div>
   </div>
