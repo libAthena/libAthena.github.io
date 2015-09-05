@@ -88,10 +88,12 @@
           if (!showingWriters)
               return;
           showingWriters = false;
-          $("#atReadButton").removeClass("atRWInactive");
-          $("#atReadButton").addClass("atRWActive");
-          $("#atWriteButton").removeClass("atRWActive");
-          $("#atWriteButton").addClass("atRWInactive");
+          var readButton = $("#atReadButton");
+          var writeButton = $("#atWriteButton");
+          readButton.removeClass("atRWInactive");
+          readButton.addClass("atRWActive");
+          writeButton.removeClass("atRWActive");
+          writeButton.addClass("atRWInactive");
           $(".atReadLayer").each(function()
           {
               var jq = $(this);
@@ -108,10 +110,12 @@
           if (showingWriters)
               return;
           showingWriters = true;
-          $("#atReadButton").removeClass("atRWActive");
-          $("#atReadButton").addClass("atRWInactive");
-          $("#atWriteButton").removeClass("atRWInactive");
-          $("#atWriteButton").addClass("atRWActive");
+          var readButton = $("#atReadButton");
+          var writeButton = $("#atWriteButton");
+          readButton.removeClass("atRWActive");
+          readButton.addClass("atRWInactive");
+          writeButton.removeClass("atRWInactive");
+          writeButton.addClass("atRWActive");
           $(".atWriteLayer").each(function()
           {
               var jq = $(this);
@@ -628,7 +632,7 @@
 
   <p>
     Now applications can use YAML as a data source/destination in addition to the
-    orginal binary format the DNA is based on. Such YAML may look like this:
+    original binary format the DNA is based on. Such YAML may look like this:
   </p>
   <div class="atIDE">
     <h1>YAMLDemo.yaml</h1>
