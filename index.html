@@ -14,16 +14,22 @@
   <link rel="stylesheet" href="/css/toc.css">
   <link rel="canonical" href="http://libAthena.github.io/">
   <link rel="alternate" type="application/rss+xml" title="Athena" href="http://libAthena.github.io/feed.xml" />
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
+  <script type="text/javascript" src="/jquery-2.1.4.min.js"></script>
 </head>
 
 
   <style type="text/css">
     .atReadLayer {
+        height: auto;
+        overflow: hidden;
+        -webkit-transition: height 1s;
+        transition: height 1s;
     }
     .atWriteLayer {
         height: 0;
         overflow: hidden;
+        -webkit-transition: height 1s;
+        transition: height 1s;
     }
   </style>
 
@@ -57,10 +63,67 @@
     
     <div class="atRW">
       
-      <a href="/" class="atRWActive atRWLeft">Readers</a>
-      <a href="/writers.html" class="atRWInactive atRWRight">Writers</a>
+      <a href="/" class="atRWActive atRWLeft" id="atReadButton">Readers</a>
+      <a href="/writers.html" class="atRWInactive atRWRight" id="atWriteButton">Writers</a>
       
     </div>
+
+    <script type="text/javascript">
+      
+      showingWriters = false;
+      $(document).ready(function()
+      {
+        $(".atReadLayer").each(function()
+        {
+            var jq = $(this);
+            jq.height("auto");
+            var autoHt = jq.height();
+            jq.height(autoHt);
+        });
+      });
+      
+      $("#atReadButton").click(function(evt) 
+      {
+          evt.preventDefault();
+          if (!showingWriters)
+              return;
+          showingWriters = false;
+          $("#atReadButton").removeClass("atRWInactive");
+          $("#atReadButton").addClass("atRWActive");
+          $("#atWriteButton").removeClass("atRWActive");
+          $("#atWriteButton").addClass("atRWInactive");
+          $(".atReadLayer").each(function()
+          {
+              var jq = $(this);
+              jq.height("auto");
+              var autoHt = jq.height();
+              jq.height(0);
+              jq.height(autoHt);
+          });
+          $(".atWriteLayer").height(0);
+      });
+      $("#atWriteButton").click(function(evt) 
+      {
+          evt.preventDefault();
+          if (showingWriters)
+              return;
+          showingWriters = true;
+          $("#atReadButton").removeClass("atRWActive");
+          $("#atReadButton").addClass("atRWInactive");
+          $("#atWriteButton").removeClass("atRWInactive");
+          $("#atWriteButton").addClass("atRWActive");
+          $(".atWriteLayer").each(function()
+          {
+              var jq = $(this);
+              jq.height("auto");
+              var autoHt = jq.height();
+              jq.height(0);
+              jq.height(autoHt);
+          });
+          $(".atReadLayer").height(0);
+      });
+    </script>
+
     
 
   </div>
@@ -113,6 +176,7 @@
 <span class="p">};</span></code></pre></figure>
   </div>
 
+  <p>The implementations for the I/O methods look like this:</p>
   <div class="atIDE">
     <div class="atReadLayer">
       <h1>ReadDemo.cpp</h1>
@@ -240,7 +304,7 @@
   <div class="atIDE">
     <div class="atReadLayer">
       <h1>MyReadBackend.hpp</h1>
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;Athena/IStreamReader&gt;</span>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;Athena/IStreamReader.hpp&gt;</span>
 <span class="k">class</span> <span class="nc">MyReadBackend</span> <span class="o">:</span> <span class="k">public</span> <a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span></a>
 <span class="p">{</span>
     <span class="n">MyReadSource</span><span class="o">&amp;</span> <span class="n">m_source</span>
@@ -278,7 +342,7 @@
     </div>
     <div class="atWriteLayer">
       <h1>MyWriteBackend.hpp</h1>
-<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;Athena/IStreamWriter&gt;</span>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;Athena/IStreamWriter.hpp&gt;</span>
 <span class="k">class</span> <span class="nc">MyWriteBackend</span> <span class="o">:</span> <span class="k">public</span> <a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span></a>
 <span class="p">{</span>
     <span class="n">MyWriteDestination</span><span class="o">&amp;</span> <span class="n">m_dest</span><span class="p">;</span>
@@ -336,7 +400,9 @@
   
   <h2>ATDNA: Athena's Copilot</h2>
   <p>
-    Athena ships with a build-tool called <code>atdna</code> that transforms C++ record 
+    Athena ships with a build-tool inspired by 
+    <a href="http://wiki.blender.org/index.php/Dev:2.5/Source/Architecture/RNA">Blender's build system</a> 
+    called <code>atdna</code>. This tool transforms C++ record 
     declarations (i.e. structs, classes, unions) into reader/writer implementations
     <em>automatically</em>. When properly integrated into a project's build system,
     changes made to the C++ records will trigger these implementations to update
@@ -389,11 +455,230 @@
     read/write functions according to the field types.
   </p>
 
+  <h2>ATDNA + CMake</h2>
+  <p>
+    Currently, ATDNA is easiest to integrate using <a href="http://www.cmake.org/">CMake</a>.
+    Projects may define DNA targets using the <code>atdna(&lt;out&gt; &lt;in&gt;)</code> macro, and
+    connecting the output file to a library or executable target.
+  </p>
+
+  <p>
+    CMake integrates with several build environments including <em>make</em>, <em>Visual Studio</em>, 
+    and <em>Xcode</em>. Please see <a href="http://www.cmake.org/documentation/">CMake's documentation</a>
+    for details.
+  </p>
+
+  <div class="atIDE">
+    <h1>CMakeLists.txt</h1>
+<figure class="highlight"><pre><code class="language-cmake" data-lang="cmake"><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.0</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">ATDNADemo</span><span class="p">)</span>
+
+<span class="c"># When Athena&#39;s codebase is built/installed on the local system,</span>
+<span class="c"># this package is visible from any project.</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">atdna</span> <span class="s">REQUIRED</span><span class="p">)</span>
+
+<span class="c"># Defines the build rule to generate &#39;DNADemo.cpp&#39; whenever </span>
+<span class="c"># &#39;DNADemo.hpp&#39; changes</span>
+<span class="nb">atdna</span><span class="p">(</span><span class="s">DNADemo.cpp</span> <span class="s">DNADemo.hpp</span><span class="p">)</span>
+
+<span class="c"># Defines the executable to compile</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">ATDNADemo</span> <span class="s">main.cpp</span> <span class="s">DNADemo.cpp</span> <span class="s">DNADemo.hpp</span><span class="p">)</span></code></pre></figure>
+  </div>
+
+  <p>
+    When built, a file like the following is generated:
+  </p>
+  <div class="atIDE">
+    <h1>DNADemo.cpp</h1>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cm">/* Auto generated atdna implementation */</span>
+<span class="cp">#include &lt;Athena/Global.hpp&gt;</span>
+<span class="cp">#include &lt;Athena/IStreamReader.hpp&gt;</span>
+<span class="cp">#include &lt;Athena/IStreamWriter.hpp&gt;</span>
+
+<span class="cp">#include &quot;DNADemo.hpp&quot;</span>
+
+<span class="kt">void</span> <span class="n">MyDNARecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span></a><span class="o">&amp;</span> <span class="n">__dna_reader</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/* m_val1 */</span>
+    <span class="n">m_val1</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint32Big</span><span class="p">();</span>
+    <span class="cm">/* m_val2 */</span>
+    <span class="n">m_val2</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readFloatBig</span><span class="p">();</span>
+    <span class="cm">/* m_val3 */</span>
+    <span class="n">m_val3</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readVec3fBig</span><span class="p">();</span>
+    <span class="cm">/* m_subCount */</span>
+    <span class="n">m_subCount</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint32Big</span><span class="p">();</span>
+    <span class="cm">/* m_subObjs */</span>
+    <span class="n">__dna_reader</span><span class="p">.</span><span class="n">enumerate</span><span class="p">(</span><span class="n">m_subObjs</span><span class="p">,</span> <span class="n">m_subCount</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MyDNARecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span></a><span class="o">&amp;</span> <span class="n">__dna_writer</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="cm">/* m_val1 */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint32Big</span><span class="p">(</span><span class="n">m_val1</span><span class="p">);</span>
+    <span class="cm">/* m_val2 */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeFloatBig</span><span class="p">(</span><span class="n">m_val2</span><span class="p">);</span>
+    <span class="cm">/* m_val3 */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeVec3fBig</span><span class="p">(</span><span class="n">m_val3</span><span class="p">);</span>
+    <span class="cm">/* m_subCount */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint32Big</span><span class="p">(</span><span class="n">m_subCount</span><span class="p">);</span>
+    <span class="cm">/* m_subObjs */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">enumerate</span><span class="p">(</span><span class="n">m_subObjs</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MyDNARecord</span><span class="o">::</span><span class="n">MyDNASubRecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span></a><span class="o">&amp;</span> <span class="n">__dna_reader</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="cm">/* m_subVal */</span>
+    <span class="n">m_subVal</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint32Big</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">MyDNARecord</span><span class="o">::</span><span class="n">MyDNASubRecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span></a><span class="o">&amp;</span> <span class="n">__dna_writer</span><span class="p">)</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="cm">/* m_subVal */</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint32Big</span><span class="p">(</span><span class="n">m_subVal</span><span class="p">);</span>
+<span class="p">}</span></code></pre></figure>
+  </div>
+
+  <h2>All together now!</h2>
+  <p>
+    Once the read/write implementations are compiled in, the application may invoke
+    them however's convenient:
+  </p>
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>main.cpp</h1>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;Athena/FileReader.hpp&gt;</span>
+<span class="cp">#include &quot;DNADemo.hpp&quot;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">FileReader</span></a> <span class="n">reader</span><span class="p">(</span><span class="s">&quot;MyDemoData.bin&quot;</span><span class="p">);</span>
+    <span class="n">MyDNARecord</span> <span class="n">record</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="n">reader</span><span class="p">);</span> <span class="cm">/* DNA implementation called here */</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Val1: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; Val2: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+    </div>
+    <div class="atWriteLayer">
+      <h1>main.cpp</h1>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &lt;Athena/FileWriter.hpp&gt;</span>
+<span class="cp">#include &quot;DNADemo.cpp&quot;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <a href=""><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">FileWriter</span></a> <span class="n">writer</span><span class="p">(</span><span class="s">&quot;MyDemoData.bin&quot;</span><span class="p">);</span>
+    <span class="n">MyDNARecord</span> <span class="n">record</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">=</span> <span class="mh">0x42</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">=</span> <span class="mf">3.14159265359</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">writer</span><span class="p">);</span> <span class="cm">/* DNA implementation called here */</span>
+<span class="p">}</span></code></pre></figure>
+    </div>
+  </div>
+
 </div>
 
 <a id="yaml" class="anchor-target"></a>
 <div class="atSection atYAML">
   <h1 class="atSectionTitle">YAML</h1>
+  <p>
+    Having a uniform system to interchange binary data is nice, but we musn't forget
+    the human programmers that work with the data and design systems around it.
+    This is where having a textual representation of the structured data is convenient.
+    <a href="https://en.wikipedia.org/wiki/YAML">YAML</a> is a simplistic data-serialization
+    format, capable of organizing string-representations of data members into mappings and 
+    sequences with multiple levels of hierarchy. 
+  </p>
+  <p>
+    <a href="">Athena::io::DNA</a> has been subclassed as <a href="">Athena::io::DNAYaml</a> 
+    to have ATDNA generate YAML serialization/deserialization alongside the binary readers/writers.
+    It's used just like the DNA system from the developer's perspective.
+  </p>
+
+  <div class="atIDE">
+    <h1>YAMLDemo.hpp</h1>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;Athena/DNAYaml.hpp&gt;</span>
+<span class="k">using</span> <span class="n">BigYAML</span> <span class="o">=</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNAYaml</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">struct</span> <span class="nl">MyYAMLRecord</span> <span class="p">:</span> <span class="n">BigYAML</span>
+<span class="p">{</span>
+    <span class="cm">/* This macro declares required member functions implementing the </span>
+<span class="cm">     * YAML record (generated by ATDNA and linked as a separate .cpp file) */</span>
+    <span class="n">DECL_YAML</span>
+
+    <span class="cm">/* Value&lt;T&gt; template passes T though to the compiler and </span>
+<span class="cm">     * exposes the field to ATDNA. Primitive fields without Value&lt;T&gt;</span>
+<span class="cm">     * are ignored by ATDNA. */</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">m_val1</span><span class="p">;</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">m_val2</span><span class="p">;</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atVec3f</span><span class="o">&gt;</span> <span class="n">m_val3</span><span class="p">;</span>
+
+    <span class="cm">/* Nested record declartions are also processed by ATDNA, </span>
+<span class="cm">     * assisting multi-level nested reads/writes */</span>
+    <span class="k">struct</span> <span class="nl">MyYAMLSubRecord</span> <span class="p">:</span> <span class="n">BigYAML</span>
+    <span class="p">{</span>
+        <span class="n">DECL_YAML</span>
+        <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">m_subVal</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="cm">/* Vector&lt;T,DNA_COUNT(N)&gt; template wraps a std::vector containing </span>
+<span class="cm">     * N elements of type T. N is captured as a full C++ expression by the </span>
+<span class="cm">     * DNA_COUNT macro and pasted within the YAML record implementation. */</span>
+    <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">m_subCount</span><span class="p">;</span>
+    <span class="n">Vector</span><span class="o">&lt;</span><span class="n">MyYAMLSubRecord</span><span class="p">,</span> <span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">m_subCount</span><span class="p">)</span><span class="o">&gt;</span> <span class="n">m_subObjs</span><span class="p">;</span>
+<span class="p">};</span></code></pre></figure>
+  </div>
+
+  <p>
+    Now applications can use YAML as a data source/destination in addition to the
+    orginal binary format the DNA is based on. Such YAML may look like this:
+  </p>
+  <div class="atIDE">
+    <h1>YAMLDemo.yaml</h1>
+<figure class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">m_val1</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">0x42</span>
+<span class="l-Scalar-Plain">m_val2</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3.14159265359</span>
+<span class="l-Scalar-Plain">m_val3</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">1.000000</span><span class="p-Indicator">,</span> <span class="nv">2.000000</span><span class="p-Indicator">,</span> <span class="nv">3.000000</span><span class="p-Indicator">]</span>
+<span class="l-Scalar-Plain">m_subCount</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">0x3</span>
+<span class="l-Scalar-Plain">m_subObjs</span><span class="p-Indicator">:</span>
+<span class="p-Indicator">-</span> <span class="p-Indicator">{</span><span class="nv">m_subVal</span><span class="p-Indicator">:</span> <span class="nv">0x1</span><span class="p-Indicator">}</span>
+<span class="p-Indicator">-</span> <span class="p-Indicator">{</span><span class="nv">m_subVal</span><span class="p-Indicator">:</span> <span class="nv">0x2</span><span class="p-Indicator">}</span>
+<span class="p-Indicator">-</span> <span class="p-Indicator">{</span><span class="nv">m_subVal</span><span class="p-Indicator">:</span> <span class="nv">0x3</span><span class="p-Indicator">}</span></code></pre></figure>
+  </div>
+
+  <h2>All together now!</h2>
+  <p>
+    The YAML implementations are compiled side-by-side with the DNA implementations.
+    The application may invoke them in a similar manner:
+  </p>
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>main.cpp</h1>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &quot;YAMLDemo.hpp&quot;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="cm">/* Stdio FILEs are one option. Raw string buffers are also available */</span>
+    <span class="kt">FILE</span><span class="o">*</span> <span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">&quot;MyDemoYAML.yaml&quot;</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+    <span class="n">MyYAMLRecord</span> <span class="n">record</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">fromYAMLFile</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span> <span class="cm">/* YAML implementation called here */</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Val1: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; Val2: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+    </div>
+    <div class="atWriteLayer">
+      <h1>main.cpp</h1>
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="cp">#include &lt;iostream&gt;</span>
+<span class="cp">#include &quot;YAMLDemo.hpp&quot;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="cm">/* Stdio FILEs are one option. Raw string buffers are also available */</span>
+    <span class="kt">FILE</span><span class="o">*</span> <span class="n">fp</span> <span class="o">=</span> <span class="n">fopen</span><span class="p">(</span><span class="s">&quot;MyDemoYAML.yaml&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">);</span>
+    <span class="n">MyYAMLRecord</span> <span class="n">record</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">m_val1</span> <span class="o">=</span> <span class="mh">0x42</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">m_val2</span> <span class="o">=</span> <span class="mf">3.14159265359</span><span class="p">;</span>
+    <span class="n">record</span><span class="p">.</span><span class="n">toYAMLFile</span><span class="p">(</span><span class="n">fp</span><span class="p">);</span> <span class="cm">/* YAML implementation called here */</span>
+<span class="p">}</span></code></pre></figure>
+    </div>
+  </div>
+  
 </div>
 
 
