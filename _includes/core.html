@@ -36,6 +36,7 @@ public:
 {% endathighlight %}
   </div>
 
+  <p>The implementations for the I/O methods look like this:</p>
   <div class="atIDE">
     <div class="atReadLayer">
       <h1>ReadDemo.cpp</h1>
@@ -180,7 +181,7 @@ Athena::io::MemoryCopyWriter WriteExistingObject(void* buf, atUint64 len, const 
     <div class="atReadLayer">
       <h1>MyReadBackend.hpp</h1>
 {% athighlight c++ %}
-#include <Athena/IStreamReader>
+#include <Athena/IStreamReader.hpp>
 class MyReadBackend : public Athena::io::IStreamReader
 {
     MyReadSource& m_source
@@ -220,7 +221,7 @@ public:
     <div class="atWriteLayer">
       <h1>MyWriteBackend.hpp</h1>
 {% athighlight c++ %}
-#include <Athena/IStreamWriter>
+#include <Athena/IStreamWriter.hpp>
 class MyWriteBackend : public Athena::io::IStreamWriter
 {
     MyWriteDestination& m_dest;

@@ -15,7 +15,9 @@
   
   <h2>ATDNA: Athena's Copilot</h2>
   <p>
-    Athena ships with a build-tool called <code>atdna</code> that transforms C++ record 
+    Athena ships with a build-tool inspired by 
+    <a href="http://wiki.blender.org/index.php/Dev:2.5/Source/Architecture/RNA">Blender's build system</a> 
+    called <code>atdna</code>. This tool transforms C++ record 
     declarations (i.e. structs, classes, unions) into reader/writer implementations
     <em>automatically</em>. When properly integrated into a project's build system,
     changes made to the C++ records will trigger these implementations to update
@@ -69,5 +71,132 @@ struct MyDNARecord : BigDNA
     to decompose the header into C++ declarations and emits the appropriate
     read/write functions according to the field types.
   </p>
+
+  <h2>ATDNA + CMake</h2>
+  <p>
+    Currently, ATDNA is easiest to integrate using <a href="http://www.cmake.org/">CMake</a>.
+    Projects may define DNA targets using the <code>atdna(&lt;out&gt; &lt;in&gt;)</code> macro, and
+    connecting the output file to a library or executable target.
+  </p>
+
+  <p>
+    CMake integrates with several build environments including <em>make</em>, <em>Visual Studio</em>, 
+    and <em>Xcode</em>. Please see <a href="http://www.cmake.org/documentation/">CMake's documentation</a>
+    for details.
+  </p>
+
+  <div class="atIDE">
+    <h1>CMakeLists.txt</h1>
+{% athighlight cmake %}
+cmake_minimum_required(VERSION 3.0)
+project(ATDNADemo)
+
+# When Athena's codebase is built/installed on the local system,
+# this package is visible from any project.
+find_package(atdna REQUIRED)
+
+# Defines the build rule to generate 'DNADemo.cpp' whenever 
+# 'DNADemo.hpp' changes
+atdna(DNADemo.cpp DNADemo.hpp)
+
+# Defines the executable to compile
+add_executable(ATDNADemo main.cpp DNADemo.cpp DNADemo.hpp)
+{% endathighlight %}
+  </div>
+
+  <p>
+    When built, a file like the following is generated:
+  </p>
+  <div class="atIDE">
+    <h1>DNADemo.cpp</h1>
+{% athighlight c++ %}
+/* Auto generated atdna implementation */
+#include <Athena/Global.hpp>
+#include <Athena/IStreamReader.hpp>
+#include <Athena/IStreamWriter.hpp>
+
+#include "DNADemo.hpp"
+
+void MyDNARecord::read(Athena::io::IStreamReader& __dna_reader)
+{
+    /* m_val1 */
+    m_val1 = __dna_reader.readUint32Big();
+    /* m_val2 */
+    m_val2 = __dna_reader.readFloatBig();
+    /* m_val3 */
+    m_val3 = __dna_reader.readVec3fBig();
+    /* m_subCount */
+    m_subCount = __dna_reader.readUint32Big();
+    /* m_subObjs */
+    __dna_reader.enumerate(m_subObjs, m_subCount);
+}
+
+void MyDNARecord::write(Athena::io::IStreamWriter& __dna_writer) const
+{
+    /* m_val1 */
+    __dna_writer.writeUint32Big(m_val1);
+    /* m_val2 */
+    __dna_writer.writeFloatBig(m_val2);
+    /* m_val3 */
+    __dna_writer.writeVec3fBig(m_val3);
+    /* m_subCount */
+    __dna_writer.writeUint32Big(m_subCount);
+    /* m_subObjs */
+    __dna_writer.enumerate(m_subObjs);
+}
+
+void MyDNARecord::MyDNASubRecord::read(Athena::io::IStreamReader& __dna_reader)
+{
+    /* m_subVal */
+    m_subVal = __dna_reader.readUint32Big();
+}
+
+void MyDNARecord::MyDNASubRecord::write(Athena::io::IStreamWriter& __dna_writer) const
+{
+    /* m_subVal */
+    __dna_writer.writeUint32Big(m_subVal);
+}
+{% endathighlight %}
+  </div>
+
+  <h2>All together now!</h2>
+  <p>
+    Once the read/write implementations are compiled in, the application may invoke
+    them however's convenient:
+  </p>
+  <div class="atIDE">
+    <div class="atReadLayer">
+      <h1>main.cpp</h1>
+{% athighlight c++ %}
+#include <iostream>
+#include <Athena/FileReader.hpp>
+#include "DNADemo.hpp"
+int main(int argc, char* argv[])
+{
+    Athena::io::FileReader reader("MyDemoData.bin");
+    MyDNARecord record;
+    record.read(reader); /* DNA implementation called here */
+    std::cout << "Val1: " << record.m_val1 << " Val2: " << record.m_val2 << "\n";
+}
+
+{% endathighlight %}
+    </div>
+    <div class="atWriteLayer">
+      <h1>main.cpp</h1>
+{% athighlight c++ %}
+#include <iostream>
+#include <Athena/FileWriter.hpp>
+#include "DNADemo.cpp"
+int main(int argc, char* argv[])
+{
+    Athena::io::FileWriter writer("MyDemoData.bin");
+    MyDNARecord record;
+    record.m_val1 = 0x42;
+    record.m_val2 = 3.14159265359;
+    record.write(writer); /* DNA implementation called here */
+}
+{% endathighlight %}
+    </div>
+  </div>
 
 </div>

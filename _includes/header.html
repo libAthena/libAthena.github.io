@@ -29,13 +29,82 @@
     {% if rwnav == 'true' %}
     <div class="atRW">
       {% if writers == "true" %}
-      <a href="{{ site.baseurl }}/" class="atRWInactive atRWLeft">Readers</a>
-      <a href="{{ site.baseurl }}/writers.html" class="atRWActive atRWRight">Writers</a>
+      <a href="{{ site.baseurl }}/" class="atRWInactive atRWLeft" id="atReadButton">Readers</a>
+      <a href="{{ site.baseurl }}/writers.html" class="atRWActive atRWRight" id="atWriteButton">Writers</a>
       {% else %}
-      <a href="{{ site.baseurl }}/" class="atRWActive atRWLeft">Readers</a>
-      <a href="{{ site.baseurl }}/writers.html" class="atRWInactive atRWRight">Writers</a>
+      <a href="{{ site.baseurl }}/" class="atRWActive atRWLeft" id="atReadButton">Readers</a>
+      <a href="{{ site.baseurl }}/writers.html" class="atRWInactive atRWRight" id="atWriteButton">Writers</a>
       {% endif %}
     </div>
+
+    <script type="text/javascript">
+      {% if writers == "true" %}
+      showingWriters = true;
+      $(document).ready(function()
+      {
+        $(".atWriteLayer").each(function()
+        {
+            var jq = $(this);
+            jq.height("auto");
+            var autoHt = jq.height();
+            jq.height(autoHt);
+        });
+      });
+      {% else %}
+      showingWriters = false;
+      $(document).ready(function()
+      {
+        $(".atReadLayer").each(function()
+        {
+            var jq = $(this);
+            jq.height("auto");
+            var autoHt = jq.height();
+            jq.height(autoHt);
+        });
+      });
+      {% endif %}
+      $("#atReadButton").click(function(evt) 
+      {
+          evt.preventDefault();
+          if (!showingWriters)
+              return;
+          showingWriters = false;
+          $("#atReadButton").removeClass("atRWInactive");
+          $("#atReadButton").addClass("atRWActive");
+          $("#atWriteButton").removeClass("atRWActive");
+          $("#atWriteButton").addClass("atRWInactive");
+          $(".atReadLayer").each(function()
+          {
+              var jq = $(this);
+              jq.height("auto");
+              var autoHt = jq.height();
+              jq.height(0);
+              jq.height(autoHt);
+          });
+          $(".atWriteLayer").height(0);
+      });
+      $("#atWriteButton").click(function(evt) 
+      {
+          evt.preventDefault();
+          if (showingWriters)
+              return;
+          showingWriters = true;
+          $("#atReadButton").removeClass("atRWActive");
+          $("#atReadButton").addClass("atRWInactive");
+          $("#atWriteButton").removeClass("atRWInactive");
+          $("#atWriteButton").addClass("atRWActive");
+          $(".atWriteLayer").each(function()
+          {
+              var jq = $(this);
+              jq.height("auto");
+              var autoHt = jq.height();
+              jq.height(0);
+              jq.height(autoHt);
+          });
+          $(".atReadLayer").height(0);
+      });
+    </script>
+
     {% endif %}
 
   </div>
