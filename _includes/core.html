@@ -26,6 +26,7 @@ using WriteStream = Athena::io::IStreamWriter;
 
 class MyDataRecord
 {
+    atUint32 m_valTest;
     atUint32 m_valU32;
     bool m_valBool;
     std::string m_string;
@@ -44,8 +45,18 @@ public:
 #include "DemoRecord.hpp"
 void MyDataRecord::readData(ReadStream& stream)
 {
+    /* Specify stream's default endianness as big for 
+     * this demo. All multi-byte numeric accesses will
+     * adhere to this unless the 'Big' or 'Little' 
+     * read/write method suffix is used */
+    stream.setEndian(Athena::BigEndian);
+
+    /* A default-endian (Big here) read of 4-bytes (32-bits)
+     * tightly packed in the binary stream */
+    m_valTest = stream.readUint32();
+
     /* Read 4-bytes and convert to 32-bit system word 
-     * (little-endian to host-endian) */
+     * (Little to host-endian; overriding the default Big) */
     m_valU32 = stream.readUint32Little();
 
     /* Read 1-byte and convert to bool type */
@@ -63,8 +74,18 @@ void MyDataRecord::readData(ReadStream& stream)
 #include "DemoRecord.hpp"
 void MyDataRecord::writeData(WriteStream& stream) const
 {
+    /* Specify stream's default endianness as big for 
+     * this demo. All multi-byte numeric accesses will
+     * adhere to this unless the 'Big' or 'Little' 
+     * read/write method suffix is used */
+    stream.setEndian(Athena::BigEndian);
+
+    /* A default-endian (Big here) write of 4-bytes (32-bits)
+     * tightly packed in the binary stream */
+    stream.writeUint32(m_valTest);
+
     /* Emit 4-bytes with binary 32-bit word 
-     * (host-endian to little-endian) */
+     * (host-endian to Little; overriding the default Big) */
     stream.writeUint32Little(m_valU32);
 
     /* Emit 1 byte with value 0 or 1 according to bool input */
