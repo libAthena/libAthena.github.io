@@ -190,7 +190,7 @@ article table td {
     line-height: 1.5; }
     .site-nav .page-link:not(:first-child) {
       margin-left: 20px; }
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 650px) {
     .site-nav {
       position: absolute;
       top: 9px;
@@ -269,7 +269,7 @@ article table td {
   .footer-col-3 {
     width: -webkit-calc(100% - (30px / 2));
     width: calc(100% - (30px / 2)); } }
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
   .footer-col {
     float: none;
     width: -webkit-calc(100% - (30px / 2));
@@ -505,7 +505,7 @@ article table td {
   display: block;
   margin-right: 30px; }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 650px) {
   .atRW {
     display: none; } }
 .atRWLeft {
