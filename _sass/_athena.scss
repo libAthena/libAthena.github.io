@@ -57,6 +57,15 @@
     border: 1px solid #ccc;
 }
 
+.atDownload, .atDownload:visited {
+    color: #282;
+    padding: 4.5pt 7pt;
+    border: 1px solid #282;
+    border-radius: 5px;
+    line-height: 1.5;
+    margin-left: 15px;
+}
+
 .atBigSexyLogo {
     position: relative;
     clear: both;
