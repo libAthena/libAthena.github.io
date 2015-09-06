@@ -172,6 +172,7 @@
 
 <span class="k">class</span> <span class="nc">MyDataRecord</span>
 <span class="p">{</span>
+    <span class="n">atUint32</span> <span class="n">m_valTest</span><span class="p">;</span>
     <span class="n">atUint32</span> <span class="n">m_valU32</span><span class="p">;</span>
     <span class="kt">bool</span> <span class="n">m_valBool</span><span class="p">;</span>
     <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">m_string</span><span class="p">;</span>
@@ -188,8 +189,18 @@
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &quot;DemoRecord.hpp&quot;</span>
 <span class="kt">void</span> <span class="n">MyDataRecord</span><span class="o">::</span><span class="n">readData</span><span class="p">(</span><span class="n">ReadStream</span><span class="o">&amp;</span> <span class="n">stream</span><span class="p">)</span>
 <span class="p">{</span>
+    <span class="cm">/* Specify stream&#39;s default endianness as big for </span>
+<span class="cm">     * this demo. All multi-byte numeric accesses will</span>
+<span class="cm">     * adhere to this unless the &#39;Big&#39; or &#39;Little&#39; </span>
+<span class="cm">     * read/write method suffix is used */</span>
+    <span class="n">stream</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+
+    <span class="cm">/* A default-endian (Big here) read of 4-bytes (32-bits)</span>
+<span class="cm">     * tightly packed in the binary stream */</span>
+    <span class="n">m_valTest</span> <span class="o">=</span> <span class="n">stream</span><span class="p">.</span><span class="n">readUint32</span><span class="p">();</span>
+
     <span class="cm">/* Read 4-bytes and convert to 32-bit system word </span>
-<span class="cm">     * (little-endian to host-endian) */</span>
+<span class="cm">     * (Little to host-endian; overriding the default Big) */</span>
     <span class="n">m_valU32</span> <span class="o">=</span> <span class="n">stream</span><span class="p">.</span><a href=""><span class="n">readUint32Little</span></a><span class="p">();</span>
 
     <span class="cm">/* Read 1-byte and convert to bool type */</span>
@@ -205,8 +216,18 @@
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="cp">#include &quot;DemoRecord.hpp&quot;</span>
 <span class="kt">void</span> <span class="n">MyDataRecord</span><span class="o">::</span><span class="n">writeData</span><span class="p">(</span><span class="n">WriteStream</span><span class="o">&amp;</span> <span class="n">stream</span><span class="p">)</span> <span class="k">const</span>
 <span class="p">{</span>
+    <span class="cm">/* Specify stream&#39;s default endianness as big for </span>
+<span class="cm">     * this demo. All multi-byte numeric accesses will</span>
+<span class="cm">     * adhere to this unless the &#39;Big&#39; or &#39;Little&#39; </span>
+<span class="cm">     * read/write method suffix is used */</span>
+    <span class="n">stream</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+
+    <span class="cm">/* A default-endian (Big here) write of 4-bytes (32-bits)</span>
+<span class="cm">     * tightly packed in the binary stream */</span>
+    <span class="n">stream</span><span class="p">.</span><span class="n">writeUint32</span><span class="p">(</span><span class="n">m_valTest</span><span class="p">);</span>
+
     <span class="cm">/* Emit 4-bytes with binary 32-bit word </span>
-<span class="cm">     * (host-endian to little-endian) */</span>
+<span class="cm">     * (host-endian to Little; overriding the default Big) */</span>
     <span class="n">stream</span><span class="p">.</span><a href=""><span class="n">writeUint32Little</span></a><span class="p">(</span><span class="n">m_valU32</span><span class="p">);</span>
 
     <span class="cm">/* Emit 1 byte with value 0 or 1 according to bool input */</span>
