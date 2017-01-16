@@ -141,9 +141,9 @@ like <code>clang</code> would as a normal compiler.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;athena/DNA.hpp&gt;</span>
 
-<span class="k">struct</span> <span class="nl">DemoRecord</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">DemoRecord</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
     <span class="k">struct</span> <span class="n">NotDnaRecord</span>
@@ -168,10 +168,10 @@ like <code>clang</code> would as a normal compiler.</p>
     <div class="doc-col">
         <h3>Sample Input</h3>
 
-<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+<div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;athena/DNA.hpp&gt;</span>
 
 <span class="k">struct</span> <span class="nl">DemoRecord</span> <span class="p">:</span> 
-<span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
@@ -179,7 +179,7 @@ like <code>clang</code> would as a normal compiler.</p>
 
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myCount</span><span class="p">;</span>
     <span class="k">struct</span> <span class="nl">DemoSubRecord</span> <span class="p">:</span> 
-    <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
     <span class="p">{</span>
         <span class="n">DECL_DNA</span>
         <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint16</span><span class="o">&gt;</span> <span class="n">myShort</span><span class="p">;</span>
@@ -194,16 +194,16 @@ like <code>clang</code> would as a normal compiler.</p>
         <h3>Sample Output</h3>
 
 <div class="highlight"><pre><code class="language-cpp" data-lang="cpp"><span class="cm">/* Auto generated atdna implementation */</span>
-<span class="cp">#include &lt;Athena/Global.hpp&gt;</span>
-<span class="cp">#include &lt;Athena/IStreamReader.hpp&gt;</span>
-<span class="cp">#include &lt;Athena/IStreamWriter.hpp&gt;</span>
+<span class="cp">#include &lt;athena/Global.hpp&gt;</span>
+<span class="cp">#include &lt;athena/IStreamReader.hpp&gt;</span>
+<span class="cp">#include &lt;athena/IStreamWriter.hpp&gt;</span>
 
 <span class="cp">#include "demo.hpp"</span>
 
-<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> 
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> 
                       <span class="n">__dna_reader</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">__dna_reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">__dna_reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
     <span class="cm">/* myInt */</span>
     <span class="n">myInt</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint32</span><span class="p">();</span>
     <span class="cm">/* myFloat */</span>
@@ -220,10 +220,10 @@ like <code>clang</code> would as a normal compiler.</p>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> 
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> 
                        <span class="n">__dna_writer</span><span class="p">)</span> <span class="k">const</span>
 <span class="p">{</span>
-    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
     <span class="cm">/* myInt */</span>
     <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint32</span><span class="p">(</span><span class="n">myInt</span><span class="p">);</span>
     <span class="cm">/* myFloat */</span>
@@ -235,10 +235,10 @@ like <code>clang</code> would as a normal compiler.</p>
         <span class="n">elem</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">__dna_writer</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">DemoSubRecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> 
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">DemoSubRecord</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> 
                                      <span class="n">__dna_reader</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">__dna_reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">__dna_reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
     <span class="cm">/* myShort */</span>
     <span class="n">myShort</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUint16</span><span class="p">();</span>
     <span class="cm">/* myChar1 */</span>
@@ -247,10 +247,10 @@ like <code>clang</code> would as a normal compiler.</p>
     <span class="n">myChar2</span> <span class="o">=</span> <span class="n">__dna_reader</span><span class="p">.</span><span class="n">readUByte</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">DemoSubRecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> 
+<span class="kt">void</span> <span class="n">DemoRecord</span><span class="o">::</span><span class="n">DemoSubRecord</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> 
                                       <span class="n">__dna_writer</span><span class="p">)</span> <span class="k">const</span>
 <span class="p">{</span>
-    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">__dna_writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
     <span class="cm">/* myShort */</span>
     <span class="n">__dna_writer</span><span class="p">.</span><span class="n">writeUint16</span><span class="p">(</span><span class="n">myShort</span><span class="p">);</span>
     <span class="cm">/* myChar1 */</span>

@@ -127,11 +127,11 @@
 </div><h2 id="tocAnchor-1-1">Defining a DNA Record</h2>
 
 <p><code>atdna</code> will only emit code for C++ records (structs, classes, unions) that 
-subclass (directly or indirectly) <code>Athena::io::DNA&lt;Athena::Endian&gt;</code>. The
+subclass (directly or indirectly) <code>athena::io::DNA&lt;athena::Endian&gt;</code>. The
 DNA base-class is defined in AthenaCore and can be included using
-<code>&lt;Athena/DNA.hpp&gt;</code>. A master byte-order 
+<code>&lt;athena/DNA.hpp&gt;</code>. A master byte-order 
 (<a href="https://en.wikipedia.org/wiki/Endianness">endianness</a>) 
-must be selected at this time (<code>Athena::BigEndian</code> or <code>Athena::LittleEndian</code>).</p>
+must be selected at this time (<code>athena::BigEndian</code> or <code>athena::LittleEndian</code>).</p>
 
 <p>In addition to the inheritance, the <code>DNA::read()</code> and <code>DNA::write()</code> methods
 must be declared within the subclass. A convenience macro <code>DECL_DNA</code> is provided
@@ -139,8 +139,8 @@ to take care of this automatically.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
-<span class="k">struct</span> <span class="nl">MyFirstDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;athena/DNA.hpp&gt;</span>
+<span class="k">struct</span> <span class="nl">MyFirstDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
@@ -158,7 +158,7 @@ template specializations to define DNA layouts. These templates are as follows:<
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="n">Value</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">type</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myValue</span><span class="p">;</span></code>
+<code class="language-cpp" data-lang="cpp"><span class="n">Value</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">type</span><span class="p">,</span> <span class="n">athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myValue</span><span class="p">;</span></code>
 </pre>
 </div>
 
@@ -235,7 +235,7 @@ type may be provided for the <code>type</code> argument.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="n">Vector</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">type</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">countVar</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myVector</span><span class="p">;</span></code>
+<code class="language-cpp" data-lang="cpp"><span class="n">Vector</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">type</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">countVar</span><span class="p">,</span> <span class="n">athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myVector</span><span class="p">;</span></code>
 </pre>
 </div>
 
@@ -256,13 +256,13 @@ how many elements the vector will be filled with.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">VectorDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">VectorDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">count</span><span class="p">;</span>
     
     <span class="cm">/* I can also be defined out-of-line */</span>
-    <span class="k">struct</span> <span class="nl">VectorElement</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="nl">VectorElement</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
     <span class="p">{</span>
         <span class="n">DECL_DNA</span>
         <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">val1</span><span class="p">;</span>
@@ -292,7 +292,7 @@ long the buffer should read and write.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">BufferDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">BufferDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">length</span><span class="p">;</span>
@@ -322,7 +322,7 @@ counting the string-buffer’s characters.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="n">WString</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myWString</span><span class="p">;</span></code>
+<code class="language-cpp" data-lang="cpp"><span class="n">WString</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myWString</span><span class="p">;</span></code>
 </pre>
 </div>
 
@@ -339,7 +339,7 @@ counting the string-buffer’s characters.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="n">UTF8</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myUTF8</span><span class="p">;</span></code>
+<code class="language-cpp" data-lang="cpp"><span class="n">UTF8</span><span class="o">&lt;</span><span class="kt">size_t</span> <span class="n">sizeVar</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">athena</span><span class="o">::</span><span class="n">Endian</span> <span class="n">endian</span> <span class="o">=</span> <span class="n">Inherit</span><span class="o">&gt;</span> <span class="n">myUTF8</span><span class="p">;</span></code>
 </pre>
 </div>
 
@@ -361,7 +361,7 @@ for fine-grained control of the stream.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="n">Seek</span><span class="o">&lt;</span><span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="n">Athena</span><span class="o">::</span><span class="n">SeekOrigin</span> <span class="n">direction</span><span class="o">&gt;</span> <span class="n">mySeek</span><span class="p">;</span></code>
+<code class="language-cpp" data-lang="cpp"><span class="n">Seek</span><span class="o">&lt;</span><span class="kt">off_t</span> <span class="n">offset</span><span class="p">,</span> <span class="n">athena</span><span class="o">::</span><span class="n">SeekOrigin</span> <span class="n">direction</span><span class="o">&gt;</span> <span class="n">mySeek</span><span class="p">;</span></code>
 </pre>
 </div>
 
@@ -380,21 +380,21 @@ expression within the record.</p>
 <table>
   <thead>
     <tr>
-      <th>Athena::SeekOrigin</th>
+      <th>athena::SeekOrigin</th>
       <th>Description</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><code>Athena::Begin</code></td>
+      <td><code>athena::Begin</code></td>
       <td>Offset from start of stream</td>
     </tr>
     <tr>
-      <td><code>Athena::Current</code></td>
+      <td><code>athena::Current</code></td>
       <td>Offset from present stream cursor</td>
     </tr>
     <tr>
-      <td><code>Athena::End</code></td>
+      <td><code>athena::End</code></td>
       <td>Offset from end of stream</td>
     </tr>
   </tbody>
@@ -404,14 +404,14 @@ expression within the record.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">SeekDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">SeekDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">subRecordOffset</span><span class="p">;</span>
-    <span class="n">Seek</span><span class="o">&lt;</span><span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">subRecordOffset</span><span class="p">),</span> <span class="n">Athena</span><span class="o">::</span><span class="n">Begin</span><span class="o">&gt;</span> <span class="n">seek1</span><span class="p">;</span>
+    <span class="n">Seek</span><span class="o">&lt;</span><span class="n">DNA_COUNT</span><span class="p">(</span><span class="n">subRecordOffset</span><span class="p">),</span> <span class="n">athena</span><span class="o">::</span><span class="n">Begin</span><span class="o">&gt;</span> <span class="n">seek1</span><span class="p">;</span>
     
     <span class="cm">/* I start at the absolute subRecordOffset */</span>
-    <span class="k">struct</span> <span class="nl">SubRecord</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="nl">SubRecord</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
     <span class="p">{</span>
         <span class="n">DECL_DNA</span>
         <span class="n">Value</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">val1</span><span class="p">;</span>
@@ -441,10 +441,10 @@ cursor-position evaluation; advancing forward to the nearest alignment multiple.
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">AlignDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="k">struct</span> <span class="nl">AlignDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
-    <span class="k">struct</span> <span class="nl">SubRecordOne</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="nl">SubRecordOne</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
     <span class="p">{</span>
         <span class="n">DECL_DNA</span>
         <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">val</span><span class="p">;</span>
@@ -453,7 +453,7 @@ cursor-position evaluation; advancing forward to the nearest alignment multiple.
     <span class="n">Align</span><span class="o">&lt;</span><span class="mi">32</span><span class="o">&gt;</span> <span class="n">align1</span><span class="p">;</span>
 
     <span class="cm">/* I'm 32-byte aligned!! */</span>
-    <span class="k">struct</span> <span class="nl">SubRecordTwo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="nl">SubRecordTwo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
     <span class="p">{</span>
         <span class="n">DECL_DNA</span>
         <span class="n">Value</span><span class="o">&lt;</span><span class="n">atVec3f</span><span class="o">&gt;</span> <span class="n">val</span><span class="p">;</span>
@@ -462,7 +462,7 @@ cursor-position evaluation; advancing forward to the nearest alignment multiple.
     <span class="n">Align</span><span class="o">&lt;</span><span class="mi">32</span><span class="o">&gt;</span> <span class="n">align2</span><span class="p">;</span>
     
     <span class="cm">/* I'm also 32-byte aligned!! */</span>
-    <span class="k">struct</span> <span class="nl">SubRecordThree</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+    <span class="k">struct</span> <span class="nl">SubRecordThree</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
     <span class="p">{</span>
         <span class="n">DECL_DNA</span>
         <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint16</span><span class="o">&gt;</span> <span class="n">val1</span><span class="p">;</span>
@@ -501,9 +501,9 @@ implementation.</p>
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;athena/DNA.hpp&gt;</span>
 
-<span class="k">struct</span> <span class="nl">BaseDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">BaseDNA</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_DNA</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
@@ -521,7 +521,7 @@ implementation.</p>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">mySubSubInt</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="kt">void</span> <span class="nf">readTest</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> <span class="n">reader</span><span class="p">)</span>
+<span class="kt">void</span> <span class="nf">readTest</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> <span class="n">reader</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">SubSubDNA</span> <span class="n">ssDna</span><span class="p">;</span>
     
@@ -550,25 +550,25 @@ reader/writer using <code>IStreamReader::setEndian()</code> or <code>IStreamWrit
 
 <div class="highlight">
 <pre>
-<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;Athena/DNA.hpp&gt;</span>
+<code class="language-cpp" data-lang="cpp"><span class="cp">#include &lt;athena/DNA.hpp&gt;</span>
 
-<span class="k">struct</span> <span class="nl">ExplicitDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
+<span class="k">struct</span> <span class="nl">ExplicitDemo</span> <span class="p">:</span> <span class="k">public</span> <span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">DNA</span><span class="o">&lt;</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">DECL_EXPLICIT_DNA</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint32</span><span class="o">&gt;</span> <span class="n">myInt</span><span class="p">;</span>
     <span class="n">Value</span><span class="o">&lt;</span><span class="n">atUint16</span><span class="o">&gt;</span> <span class="n">myShort</span><span class="p">;</span>
 <span class="p">};</span>
 
-<span class="kt">void</span> <span class="n">ExplicitDemo</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> <span class="n">reader</span><span class="p">)</span>
+<span class="kt">void</span> <span class="n">ExplicitDemo</span><span class="o">::</span><span class="n">read</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamReader</span><span class="o">&amp;</span> <span class="n">reader</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="n">reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">reader</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
     <span class="n">myInt</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">readUint32</span><span class="p">();</span>
     <span class="n">myShort</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="n">readUint16</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="kt">void</span> <span class="n">ExplicitDemo</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> <span class="n">writer</span><span class="p">)</span> <span class="k">const</span>
+<span class="kt">void</span> <span class="n">ExplicitDemo</span><span class="o">::</span><span class="n">write</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">IStreamWriter</span><span class="o">&amp;</span> <span class="n">writer</span><span class="p">)</span> <span class="k">const</span>
 <span class="p">{</span>
-    <span class="n">writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">Athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
+    <span class="n">writer</span><span class="p">.</span><span class="n">setEndian</span><span class="p">(</span><span class="n">athena</span><span class="o">::</span><span class="n">BigEndian</span><span class="p">);</span>
     <span class="n">writer</span><span class="p">.</span><span class="n">writeUint32</span><span class="p">(</span><span class="n">myInt</span><span class="p">);</span>
     <span class="n">writer</span><span class="p">.</span><span class="n">writeUint16</span><span class="p">(</span><span class="n">myShort</span><span class="p">);</span>
 <span class="p">}</span></code>
